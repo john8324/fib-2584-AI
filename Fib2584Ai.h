@@ -20,6 +20,9 @@ public:
 	You can implement any additional functions
 	or define any variables you may need.
 	**********************************/
+
+private:
+	static bool _inited;
 };
 
 #endif

@@ -1,13 +1,16 @@
 #include "Fib2584Ai.h"
 
+bool Fib2584Ai::_inited = false;
+
 Fib2584Ai::Fib2584Ai()
 {
 }
 
 void Fib2584Ai::initialize(int argc, char* argv[])
 {
+	if (_inited) return;
 	srand(time(NULL));
-	return;
+	_inited = true;
 }
 
 
