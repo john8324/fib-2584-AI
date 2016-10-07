@@ -12,7 +12,7 @@ public:
 	// initialize ai
 	void initialize(int argc, char* argv[]);
 	// generate one move
-	MoveDirection generateMove(int board[4][4]);
+	MoveDirection generateMove(const int board[4][4]);
 	// do some action when game over
 	void gameOver(int board[4][4], int iScore);
 

@@ -14,7 +14,7 @@ void Fib2584Ai::initialize(int argc, char* argv[])
 }
 
 
-MoveDirection Fib2584Ai::generateMove(int board[4][4])
+MoveDirection Fib2584Ai::generateMove(const int board[4][4])
 {
 	MoveDirection randomMove = static_cast<MoveDirection>(rand() % 4);
 	return randomMove;
