@@ -3,7 +3,7 @@
 bool Fib2584Ai::_inited = false;
 static const int *_fib = GameBoard::fibonacci_;
 
-static int get_fib_index(int fib)
+inline static int get_fib_index(int fib)
 {
 	if (fib < 0 || fib > 2584) {
 		return -1;
@@ -99,7 +99,7 @@ static double ai_score(const int board[4][4])
 	for (int i = 0; i < 4; i++) {
 		for (int j = 0; j < 4; j++) {
 			score += board[i][j] == 0 ? 1 : 0;
-			//score += 0.12 * pow(max_board - board[i][j], 3.5);
+			score += board[i][j] > 300 ? 0.1 : 0;
 		}
 	}
 	return score;
