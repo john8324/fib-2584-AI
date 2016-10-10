@@ -105,6 +105,36 @@ static double ai_score(const int board[4][4])
 	return score;
 }
 
+static void move_up(int board[4][4])
+{
+	int tmp[4], tmp_count;
+	for (int j = 0; j < 4; j++) {
+		// compact
+		tmp_count = 0;
+		for (int i = 0; i < 4; i++) {
+			if (board[i][j]) {
+				tmp[tmp_count++] = board[i][j];
+			}
+		}
+		for (int i = 0; i < 4; i++) {
+			board[i][j] = i < tmp_count ? tmp[i] : 0;
+		}
+		
+		// merge
+		for (int i = 0; i < 3; i++) {
+			int mm = board[i][j] + board[i+1][j];
+			if (-1 != get_fib_index(mm)) {
+				board[i][j] = mm;
+				for (int ii = i+1; ii < 3; ii++) {
+					board[ii][j] = board[ii+1][j];
+				}
+				board[3][j] = 0;
+				break;
+			}
+		}
+	}
+}
+
 Fib2584Ai::Fib2584Ai()
 {
 }
@@ -129,34 +159,9 @@ MoveDirection Fib2584Ai::generateMove(const int board[4][4])
 	rotate_to_up(nextBoards[2], MOVE_DOWN);
 	rotate_to_up(nextBoards[3], MOVE_LEFT);
 	
-	int tmp[4], tmp_count;
-	
+	// actual move
 	for (dir = 0; dir < 4; dir++) {
-		for (int j = 0; j < 4; j++) {
-			// compact
-			tmp_count = 0;
-			for (int i = 0; i < 4; i++) {
-				if (nextBoards[dir][i][j]) {
-					tmp[tmp_count++] = nextBoards[dir][i][j];
-				}
-			}
-			for (int i = 0; i < 4; i++) {
-				nextBoards[dir][i][j] = i < tmp_count ? tmp[i] : 0;
-			}
-			
-			// merge
-			for (int i = 0; i < 3; i++) {
-				int mm = nextBoards[dir][i][j] + nextBoards[dir][i+1][j];
-				if (-1 != get_fib_index(mm)) {
-					nextBoards[dir][i][j] = mm;
-					for (int ii = i+1; ii < 3; ii++) {
-						nextBoards[dir][ii][j] = nextBoards[dir][ii+1][j];
-					}
-					nextBoards[dir][3][j] = 0;
-					break;
-				}
-			}
-		}
+		move_up(nextBoards[dir]);
 	}
 	
 	reverse_rotate(nextBoards[1], MOVE_RIGHT);
