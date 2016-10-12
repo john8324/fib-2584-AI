@@ -135,6 +135,27 @@ static void move_up(int board[4][4])
 	}
 }
 
+inline static void actual_move(int board[4][4], MoveDirection dir)
+{
+	switch (dir) {
+		case MOVE_UP:
+			move_up(board);
+			break;
+			
+		case MOVE_DOWN:
+		case MOVE_LEFT:
+		case MOVE_RIGHT:
+			rotate_to_up(board, dir);
+			move_up(board);
+			reverse_rotate(board, dir);
+			break;
+			
+		default:
+			printf("bull shit\n");
+			break;
+	}
+}
+
 Fib2584Ai::Fib2584Ai()
 {
 }
@@ -155,18 +176,10 @@ MoveDirection Fib2584Ai::generateMove(const int board[4][4])
 		memcpy(nextBoards[dir], board, sizeof(int) << 4);
 	}
 	
-	rotate_to_up(nextBoards[1], MOVE_RIGHT);
-	rotate_to_up(nextBoards[2], MOVE_DOWN);
-	rotate_to_up(nextBoards[3], MOVE_LEFT);
-	
 	// actual move
 	for (dir = 0; dir < 4; dir++) {
-		move_up(nextBoards[dir]);
+		actual_move(nextBoards[dir], static_cast<MoveDirection>(dir));
 	}
-	
-	reverse_rotate(nextBoards[1], MOVE_RIGHT);
-	reverse_rotate(nextBoards[2], MOVE_DOWN);
-	reverse_rotate(nextBoards[3], MOVE_LEFT);
 	
 	for (dir = 0; dir < 4; dir++) {
 		if (0 == memcmp(nextBoards[dir], board, sizeof(int) << 4)) {
