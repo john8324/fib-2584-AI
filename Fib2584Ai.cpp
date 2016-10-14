@@ -88,25 +88,6 @@ inline static void reverse_rotate(int board[4][4], MoveDirection dir)
 	}
 }
 
-static double ai_score(const int board[4][4])
-{
-	double score = 0, avg = 0;
-	for (int i = 0; i < 4; i++) {
-		for (int j = 0; j < 4; j++) {
-			avg += board[i][j];
-		}
-	}
-	avg /= 16;
-
-	for (int i = 0; i < 4; i++) {
-		for (int j = 0; j < 4; j++) {
-			score += board[i][j] == 0 ? 1 : 0;
-			score += abs(board[i][j] - avg);
-		}
-	}
-	return score;
-}
-
 static void move_up(int board[4][4])
 {
 	int tmp[4], tmp_count;
@@ -153,9 +134,63 @@ inline static void actual_move(int board[4][4], MoveDirection dir)
 			break;
 			
 		default:
-			printf("bull shit\n");
+			printf("WRONG\n");
 			break;
 	}
+}
+
+static double ai_score(const int board[4][4])
+{
+	double score = 0;
+	const int LEVEL = 2;
+	int st_board[LEVEL][4][4], st_state[LEVEL]; // stack
+	// push first
+	memcpy(st_board[0], board, sizeof(int) << 4);
+	st_state[0] = 0;
+	int sn = 1; // stack count
+	while(sn) {
+		// select top
+		//printf("%d\n", sn);
+		auto top = st_board[sn-1];
+		if (sn == LEVEL) {
+			// full
+			for (int i = 0; i < 4; i++) {
+				for (int j = 0; j < 4; j++) {
+					score += top[i][j] == 0 ? 1 : 0;
+					score += top[i][j] > 600 ? 1.5 : 0;
+				}
+			}
+			// pop
+			sn--;
+		} else {
+			memcpy(st_board[sn], top, sizeof(int) << 4);
+			// st_state 代表回復以前的state
+			int k = st_state[sn-1];
+			for (; k < 64; k++) {
+				int i = k / 16, j = (k % 16) / 4, dir = k % 4;
+				if (top[i][j] == 0) {
+					st_board[sn][i][j] = 1;
+					int tmp[4][4];
+					memcpy(tmp, st_board[sn], sizeof(int) << 4);
+					actual_move(st_board[sn], static_cast<MoveDirection>(dir));
+					if (0 == memcmp(tmp, st_board[sn], sizeof(int) << 4)) {
+						st_board[sn][i][j] = 0;
+						continue;
+					}
+					st_state[sn-1] = k+1;
+					// push
+					sn++;
+					break;
+				}
+			}
+			if (k >= 64) {
+				// pop
+				sn--;
+			}
+		}
+	}
+	//printf("Score!!!!!!!!!!!!!!!!!!\n");
+	return score;
 }
 
 Fib2584Ai::Fib2584Ai()
@@ -194,7 +229,7 @@ MoveDirection Fib2584Ai::generateMove(const int board[4][4])
 		}
 	}
 	
-	if (max_dir == -1) printf("shit\n");
+	if (max_dir == -1) max_dir = rand() % 4;
 	return static_cast<MoveDirection>(max_dir);
 }
 
