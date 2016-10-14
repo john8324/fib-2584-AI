@@ -90,16 +90,10 @@ inline static void reverse_rotate(int board[4][4], MoveDirection dir)
 
 static double ai_score(const int board[4][4])
 {
-	double score, max_board = 0;
-	for (int i = 0; i < 4; i++) {
-		for (int j = 0; j < 4; j++) {
-			max_board = board[i][j] > max_board ? board[i][j] : max_board;
-		}
-	}
+	double score = 0;
 	for (int i = 0; i < 4; i++) {
 		for (int j = 0; j < 4; j++) {
 			score += board[i][j] == 0 ? 1 : 0;
-			score += board[i][j] > 300 ? 0.1 : 0;
 		}
 	}
 	return score;
@@ -151,7 +145,7 @@ inline static void actual_move(int board[4][4], MoveDirection dir)
 			break;
 			
 		default:
-			printf("bull shit\n");
+			printf("WRONG\n");
 			break;
 	}
 }
@@ -192,7 +186,7 @@ MoveDirection Fib2584Ai::generateMove(const int board[4][4])
 		}
 	}
 	
-	if (max_dir == -1) printf("shit\n");
+	if (max_dir == -1) max_dir = rand() % 4;
 	return static_cast<MoveDirection>(max_dir);
 }
 
