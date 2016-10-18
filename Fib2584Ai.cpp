@@ -5,13 +5,15 @@ static const int *_fib = GameBoard::fibonacci_;
 
 inline static int get_fib_index(int fib)
 {
-	if (fib < 0 || fib > 2584) {
+	if (fib < 0 || fib > _fib[31]) {
 		return -1;
 	}
-	for (int i = 0; i < 20; i++) {
-		if (fib == _fib[i]) {
-			return i;
-		}
+	int left = 0, right = 32; // [left, right)
+	while (left < right) {
+		int mid = (left + right) / 2;
+		if (fib == _fib[mid]) return mid;
+		else if (fib < _fib[mid]) right = mid;
+		else left = mid + 1;
 	}
 	return -1;
 }
