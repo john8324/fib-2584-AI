@@ -3,6 +3,7 @@
 
 #include <cstdlib>
 #include <ctime>
+#include <stack>
 #include "Fib2584/MoveDirection.h"
 #include "MyBoard.h"
 #include "Feature.h"
