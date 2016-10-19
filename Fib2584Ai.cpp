@@ -5,49 +5,46 @@ bool Fib2584Ai::_inited = false;
 static double ai_score(const MyBoard &board)
 {
 	double score = 0;
-	typedef pair<MyBoard, int> BoardState;
-	// stack
-	stack<BoardState> st_board;
-	// push first
-	st_board.push(BoardState(board, 0));
-	while (!st_board.empty()) {
-		// select top
-		BoardState top = st_board.top();
-		st_board.pop();
-		if (top.first.maxTile() >= 10) {
-			// WIN
-			score += 10;
-		} else if (top.first.isOver()) {
-			// LOSE
-			score -= 2.5;
-		} else if (top.first.isFull()) {
-			// There are NO ZEROS in board
-			for (int dir = top.second; dir < 4; dir++) {
-				MyBoard after = top.first;
-				if (!after.move(static_cast<MoveDirection>(dir))) {
-					continue;
-				}
-				st_board.push(BoardState(top.first, dir+1));
-				st_board.push(BoardState(after, 0));
-				break;
+	if (board.maxTile() >= 610) {
+		// WIN
+		score = 100;
+	} else if (board.isOver()) {
+		// LOSE
+		score = -100;
+	} else if (board.isFull()) {
+		// There are NO ZEROS in board
+		for (int dir = 0; dir < 4; dir++) {
+			MyBoard after = board;
+			if (!after.move(static_cast<MoveDirection>(dir))) {
+				continue;
 			}
-		} else {
-			for (int k = top.second; k < 128; k++) {
-				int i = k >> 5, j = (k >> 3) & 0x11, dir = (k >> 1) & 0x11, n = k & 1;
-				MyBoard after = top.first;
-				if (after.board[i][j] == 0) {
-					after.board[i][j] = n ? 3 : 1;
-					if (!after.move(static_cast<MoveDirection>(dir))) {
-						continue;
+			score += 1;
+		}
+	} else {
+		for (int i = 0; i < 4; i++) {
+			for (int j = 0 ; j < 4; j++) {
+				if (!board.board[i][j]) {
+					MyBoard after = board;
+					after.board[i][j] = 1;
+					for (int dir = 0; dir < 4; dir++) {
+						if (!after.move(static_cast<MoveDirection>(dir))) {
+							continue;
+						}
+						score += 0.1;
 					}
-					st_board.push(BoardState(top.first, k+1));
-					st_board.push(BoardState(after, 0));
-					break;
+					// ----------------------------------------
+					after = board;
+					after.board[i][j] = 3;
+					for (int dir = 0; dir < 4; dir++) {
+						if (!after.move(static_cast<MoveDirection>(dir))) {
+							continue;
+						}
+						score += 0.1;
+					}
 				}
 			}
 		}
 	}
-	//printf("Score!!!!!!!!!!!!!!!!!!\n");
 	return score;
 }
 
