@@ -91,6 +91,7 @@ inline static void reverse_rotate(int board[4][4], MoveDirection dir)
 static void move_up(int board[4][4])
 {
 	int tmp[4], tmp_count;
+	// check each column
 	for (int j = 0; j < 4; j++) {
 		// compact
 		tmp_count = 0;
@@ -104,7 +105,7 @@ static void move_up(int board[4][4])
 		}
 		
 		// merge
-		for (int i = 0; i < 3; i++) {
+		for (int i = 0; i < 3 && board[i+1][j]; i++) {
 			int mm = board[i][j] + board[i+1][j];
 			if (-1 != get_fib_index(mm)) {
 				board[i][j] = mm;
@@ -112,6 +113,7 @@ static void move_up(int board[4][4])
 					board[ii][j] = board[ii+1][j];
 				}
 				board[3][j] = 0;
+				// finish merging
 				break;
 			}
 		}
