@@ -16,6 +16,8 @@ struct MyBoard{
 	bool operator !=(const MyBoard& other) const {return !(*this == other);}
 	// method
 	bool move(MoveDirection dir);
+	bool isOver();
+	int maxTile();
 };
 
 #endif

@@ -141,3 +141,23 @@ bool MyBoard::move(MoveDirection dir)
 	}
 	return ori != *this;
 }
+
+bool MyBoard::isOver()
+{
+	for (int i = 0; i < 4; i++) {
+		MyBoard tmp = *this;
+		if (tmp.move((MoveDirection)i)) return false;
+	}
+	return true;
+}
+
+int MyBoard::maxTile()
+{
+	int max = 0;
+	for (int i = 0; i < 4; i++) {
+		for (int j = 0; j < 4; j++) {
+			max = board[i][j] > max ? board[i][j] : max;
+		}
+	}
+	return max;
+}
