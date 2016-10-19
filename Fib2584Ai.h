@@ -26,6 +26,7 @@ public:
 
 private:
 	static bool _inited;
+	TD td;
 };
 
 #endif
