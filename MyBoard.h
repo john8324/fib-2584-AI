@@ -17,6 +17,7 @@ struct MyBoard{
 	// method
 	bool move(MoveDirection dir);
 	bool isOver();
+	bool isFull();
 	int maxTile();
 	inline static int get_fib_index(int fib);
 };

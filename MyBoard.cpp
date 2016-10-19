@@ -135,6 +135,16 @@ bool MyBoard::isOver()
 	return true;
 }
 
+bool MyBoard::isFull()
+{
+	for (int i = 0; i < 4; i++) {
+		for (int j = 0; j < 4; j++) {
+			if (!board[i][j]) return false;
+		}
+	}
+	return true;
+}
+
 int MyBoard::maxTile()
 {
 	int max = 0;
