@@ -16,9 +16,9 @@ struct MyBoard{
 	bool operator !=(const MyBoard& other) const {return !(*this == other);}
 	// method
 	bool move(MoveDirection dir);
-	bool isOver();
-	bool isFull();
-	int maxTile();
+	bool isOver() const;
+	bool isFull() const;
+	int maxTile() const;
 	inline static int get_fib_index(int fib);
 };
 

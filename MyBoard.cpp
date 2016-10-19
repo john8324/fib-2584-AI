@@ -126,7 +126,7 @@ bool MyBoard::move(MoveDirection dir)
 	return ori != *this;
 }
 
-bool MyBoard::isOver()
+bool MyBoard::isOver() const
 {
 	for (int i = 0; i < 4; i++) {
 		MyBoard tmp = *this;
@@ -135,7 +135,7 @@ bool MyBoard::isOver()
 	return true;
 }
 
-bool MyBoard::isFull()
+bool MyBoard::isFull() const
 {
 	for (int i = 0; i < 4; i++) {
 		for (int j = 0; j < 4; j++) {
@@ -145,7 +145,7 @@ bool MyBoard::isFull()
 	return true;
 }
 
-int MyBoard::maxTile()
+int MyBoard::maxTile() const
 {
 	int max = 0;
 	for (int i = 0; i < 4; i++) {
