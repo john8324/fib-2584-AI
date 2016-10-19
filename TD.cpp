@@ -19,12 +19,17 @@ TD::~TD()
 	}
 }
 
-double TD::eval(const Feature &feature)
+double TD::eval(const Feature &feature) const
 {
-	auto f = feature.getFeature();
+	vector<int> f = feature.getFeature(); // sparse
 	double sum = 0;
-	for (int i = 0; weight.size(); i++) {
-		sum += f[i] ? weight[i] : 0;
+	for (int i = 0; i < f.size(); i++) {
+		sum += weight[f[i]];
 	}
 	return sum;
+}
+
+void TD::updateWeight()
+{
+	;
 }

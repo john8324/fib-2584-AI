@@ -3,17 +3,23 @@
 
 #include <iostream>
 #include <vector>
+#include <stack>
 #include "Feature.h"
 
 // TD(0) learning
 class TD{
 public:
+	// constructor and destructor
 	TD();
 	~TD();
-	double eval(const Feature& feature);
+	// method
+	double eval(const Feature& feature) const;
+	void pushAfterState(const MyBoard &board) {afterStates.push(board);}
+	void updateWeight();
 
 private:
 	vector<double> weight;
+	stack<MyBoard> afterStates;
 	const double alpha = 0.01; // learning rate
 };
 
