@@ -8,6 +8,7 @@
 class Feature{
 public:
 	Feature(const MyBoard &board);
+	const vector<bool>& getFeature() const {return _feature;}
 
 private:
 	vector<bool> _feature;

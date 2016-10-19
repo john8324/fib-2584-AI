@@ -6,6 +6,7 @@
 #include "Fib2584/MoveDirection.h"
 #include "MyBoard.h"
 #include "Feature.h"
+#include "TD.h"
 
 class Fib2584Ai
 {
