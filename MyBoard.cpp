@@ -1,20 +1,4 @@
 #include "MyBoard.h"
-static const int *_fib = GameBoard::fibonacci_;
-
-inline static int get_fib_index(int fib)
-{
-	if (fib < 0 || fib > _fib[31]) {
-		return -1;
-	}
-	int left = 0, right = 32; // [left, right)
-	while (left < right) {
-		int mid = (left + right) / 2;
-		if (fib == _fib[mid]) return mid;
-		else if (fib < _fib[mid]) right = mid;
-		else left = mid + 1;
-	}
-	return -1;
-}
 
 static void rotate_to_up(int board[4][4], MoveDirection dir)
 {
@@ -107,7 +91,7 @@ static void move_up(int board[4][4])
 		// merge
 		for (int i = 0; i < 3 && board[i+1][j]; i++) {
 			int mm = board[i][j] + board[i+1][j];
-			if (-1 != get_fib_index(mm)) {
+			if (-1 != MyBoard::get_fib_index(mm)) {
 				board[i][j] = mm;
 				for (int ii = i+1; ii < 3; ii++) {
 					board[ii][j] = board[ii+1][j];
