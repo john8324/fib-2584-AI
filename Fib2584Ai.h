@@ -3,10 +3,8 @@
 
 #include <cstdlib>
 #include <ctime>
-#include <cstring>
-#include <cmath>
 #include "Fib2584/MoveDirection.h"
-#include "Fib2584/GameBoard.h"
+#include "MyBoard.h"
 
 class Fib2584Ai
 {
