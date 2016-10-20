@@ -44,7 +44,7 @@ int main(int argc, char* argv[])
 			int tmp[4][4];
 			gameBoard.getArrayBoard(tmp);
 			MyBoard tt(tmp); // TA
-			if (bb != tmp) {
+			if (0) {
 				cout << "------------ori------------" << endl;
 				cout << ori << endl;
 				cout << "------------My-------------" << endl;
