@@ -32,15 +32,16 @@ double TD::eval(const Feature &feature) const
 
 void TD::updateWeight()
 {
+	cout << afterStates.size() << endl;
 	auto last = afterStates.top();
 	afterStates.pop();
 	double Vstt = 5000; // V(s(t+1))
 	if (last.first.maxTile() >= 610) {
 		// WIN
-		Vstt = 100000;
+		Vstt = 1000000;
 	} else if (last.first.isOver()) {
 		// LOSE
-		Vstt = 0;
+		Vstt = -1000000;
 	} else {
 		cout << "LAST is NOT over!!!!!!" << endl;
 		throw ("LAST is NOT over!!!!!!");
