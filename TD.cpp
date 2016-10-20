@@ -31,27 +31,30 @@ double TD::eval(const Feature &feature) const
 
 void TD::updateWeight()
 {
-	double Vs = 2000;
+	auto last = afterStates.top();
+	afterStates.pop();
+	double Vs = 5000;
+	if (last.first.maxTile() >= 610) {
+		// WIN
+		Vs = 100000;
+	} else if (last.first.isOver()) {
+		// LOSE
+		Vs = 0;
+	} else {
+		cout << "LAST is NOT over!!!!!!" << endl;
+	}
 	while (!afterStates.empty()) {
 		auto top = afterStates.top();
 		afterStates.pop();
-		const Feature f(top);
+		const Feature f(top.first);
 		const double ori_Vs = eval(f);
-		if (top.maxTile() >= 610) {
-			// WIN
-			Vs = 100000;
-		} else if (top.isOver()) {
-			// LOSE
-			Vs = 0;
-		} else {
-			Vs -= 1;
-		}
-		double dV = alpha * (1 + Vs - ori_Vs);
+		double dV = alpha * (top.second + Vs - ori_Vs);
 		// dv/df = w
 		vector<int> ff = f.getFeature();
 		for (int i = 0; i < ff.size(); i++) {
 			weight[ff[i]] += dV;
 			//cout << weight[ff[i]] << endl;
 		}
+		Vs -= top.second;
 	}
 }
