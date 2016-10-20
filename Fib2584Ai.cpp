@@ -25,14 +25,12 @@ MoveDirection Fib2584Ai::generateMove(const int board[4][4])
 		}
 	}
 	max_dir = max_dir == -1 ? rand() % 4 : max_dir;
-	td.pushAfterState(after[max_dir]);
 	return static_cast<MoveDirection>(max_dir);
 }
 
 void Fib2584Ai::gameOver(int board[4][4], int iScore)
 {
 	//printf("%d\n", iScore);
-	td.updateWeight();
 }
 
 /**********************************

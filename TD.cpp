@@ -31,27 +31,4 @@ double TD::eval(const Feature &feature) const
 
 void TD::updateWeight()
 {
-	double Vs = 2000;
-	while (!afterStates.empty()) {
-		auto top = afterStates.top();
-		afterStates.pop();
-		const Feature f(top);
-		const double ori_Vs = eval(f);
-		if (top.maxTile() >= 610) {
-			// WIN
-			Vs = 100000;
-		} else if (top.isOver()) {
-			// LOSE
-			Vs = 0;
-		} else {
-			Vs -= 1;
-		}
-		double dV = alpha * (1 + Vs - ori_Vs);
-		// v = f dot w, dv/df = w
-		vector<int> ff = f.getFeature();
-		for (int i = 0; i < ff.size(); i++) {
-			weight[ff[i]] += dV;
-			//cout << weight[ff[i]] << endl;
-		}
-	}
 }

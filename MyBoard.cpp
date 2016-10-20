@@ -97,8 +97,6 @@ static void move_up(int board[4][4])
 					board[ii][j] = board[ii+1][j];
 				}
 				board[3][j] = 0;
-				// finish merging
-				break;
 			}
 		}
 	}

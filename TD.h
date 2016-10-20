@@ -6,6 +6,8 @@
 #include <stack>
 #include "Feature.h"
 
+typedef pair<MyBoard, double> State;
+
 // TD(0) learning
 class TD{
 public:
@@ -14,12 +16,12 @@ public:
 	~TD();
 	// method
 	double eval(const Feature& feature) const;
-	void pushAfterState(const MyBoard &board) {afterStates.push(board);}
+	void pushAfterState(const State &state) {afterStates.push(state);}
 	void updateWeight();
 
 private:
 	vector<double> weight;
-	stack<MyBoard> afterStates;
+	stack<State> afterStates;
 	const double alpha = 0.04; // learning rate
 };
 

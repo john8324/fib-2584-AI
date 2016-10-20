@@ -37,6 +37,25 @@ int main(int argc, char* argv[])
 				continue;
 			statistic.increaseOneMove();
 
+			// check
+			MyBoard ori(arrayBoard), bb;
+			bb = ori;
+			bb.move(moveDirection);  // My
+			int tmp[4][4];
+			gameBoard.getArrayBoard(tmp);
+			MyBoard tt(tmp); // TA
+			if (bb != tmp) {
+				cout << "------------ori------------" << endl;
+				cout << ori << endl;
+				cout << "------------My-------------" << endl;
+				cout << bb;
+				cout << "------------TA-------------" << endl;
+				cout << tt;
+				cout << "---------------------------" << endl;
+				cout << "dir = " << moveDirection << " WRONG MOVE!!!!!!!!!!!!!" << endl;
+				cout << "------------xx-------------" << endl;
+			}
+
 			gameBoard.addRandomTile();
 		}
 		gameBoard.getArrayBoard(arrayBoard);
