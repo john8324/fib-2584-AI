@@ -7,11 +7,39 @@
 
 using namespace std;
 
+void weightViewer()
+{
+	double *w = new double[1 << 23];
+	FILE *fp = fopen("TD_w.bin", "r");
+	if (fp) {
+		fread(w, sizeof(double), 1 << 23, fp);
+		fclose(fp);
+	}
+	while (1) {
+		int n, a, b, c, d;
+		n = a = b = c = d = -1;
+		cout << "n a b c d:" << endl;
+		cin >> n >> a >> b >> c >> d;
+		if (n < 0 || a < 0 || b < 0 || c < 0 || d < 0) {
+			break;
+		}
+		if (n >= 8 || a >= 32 || b >= 32 || c >= 32 || d >= 32) {
+			break;
+		}
+		printf("%d %d %d %d %d\n%e\n", n, a, b, c, d, w[n<<20|a<<15|b<<10|c<<5|d]);
+	}
+	cout << *max_element(w, w + (1 << 23)) << endl;
+	cout << *min_element(w, w + (1 << 23)) << endl;
+	delete[] w;
+}
+
 int main(int argc, char* argv[])
 {
 	if(argc == 1) {
 		cerr << "usage: play_game rounds [other arguments which your AI needs]" << endl;
-		return 1;
+		cout << "weightViewer >>>> " << endl;
+		weightViewer();
+		return 0;
 	}
 	int iPlayRounds = atoi(argv[1]);
 	// create and initialize AI
