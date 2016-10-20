@@ -40,7 +40,8 @@ int main(int argc, char* argv[])
 			// check
 			MyBoard ori(arrayBoard), bb;
 			bb = ori;
-			bb.move(moveDirection);  // My
+			int ss;
+			bb.move(moveDirection, ss);  // My
 			int tmp[4][4];
 			gameBoard.getArrayBoard(tmp);
 			MyBoard tt(tmp); // TA
@@ -57,6 +58,7 @@ int main(int argc, char* argv[])
 			}
 
 			gameBoard.addRandomTile();
+			//cout << "Now score = " << iScore << endl;
 		}
 		gameBoard.getArrayBoard(arrayBoard);
 		ai.gameOver(arrayBoard, iScore);

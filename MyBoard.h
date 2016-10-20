@@ -15,7 +15,7 @@ struct MyBoard{
 	bool operator ==(const MyBoard& other) const {return 0 == memcmp(board, other.board, sizeof(int) << 4);}
 	bool operator !=(const MyBoard& other) const {return !(*this == other);}
 	// method
-	bool move(MoveDirection dir);
+	bool move(MoveDirection dir, int& score);
 	bool isOver() const;
 	bool isFull() const;
 	int maxTile() const;
