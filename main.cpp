@@ -44,7 +44,7 @@ int main(int argc, char* argv[])
 			int tmp[4][4];
 			gameBoard.getArrayBoard(tmp);
 			MyBoard tt(tmp); // TA
-			if (1) {
+			if (bb != tmp) {
 				cout << "------------ori------------" << endl;
 				cout << ori << endl;
 				cout << "------------My-------------" << endl;
@@ -52,7 +52,7 @@ int main(int argc, char* argv[])
 				cout << "------------TA-------------" << endl;
 				cout << tt;
 				cout << "---------------------------" << endl;
-				cout << "dir = " << moveDirection << " correct = " << (bb == tmp) << endl;
+				cout << "dir = " << moveDirection << " WRONG MOVE!!!!!!!!!!!!!" << endl;
 				cout << "------------xx-------------" << endl;
 			}
 
