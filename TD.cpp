@@ -47,7 +47,7 @@ void TD::updateWeight()
 			Vs -= 1;
 		}
 		double dV = alpha * (1 + Vs - ori_Vs);
-		// dv/df = w
+		// v = f dot w, dv/df = w
 		vector<int> ff = f.getFeature();
 		for (int i = 0; i < ff.size(); i++) {
 			weight[ff[i]] += dV;
