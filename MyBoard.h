@@ -20,6 +20,15 @@ struct MyBoard{
 	bool isFull() const;
 	int maxTile() const;
 	inline static int get_fib_index(int fib);
+	friend ostream& operator<< (ostream& os, const MyBoard& board) {
+		for(int i = 0; i < 4; i++) {
+			for (int j = 0; j < 4; j++) {
+				os << board.board[i][j] << " ";
+			}
+			os << endl;
+		}
+		return os;
+	}
 };
 
 inline int MyBoard::get_fib_index(int fib)
