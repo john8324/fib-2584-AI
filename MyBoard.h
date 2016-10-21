@@ -15,10 +15,19 @@ struct MyBoard{
 	bool operator ==(const MyBoard& other) const {return 0 == memcmp(board, other.board, sizeof(int) << 4);}
 	bool operator !=(const MyBoard& other) const {return !(*this == other);}
 	// method
-	bool move(MoveDirection dir);
+	bool move(MoveDirection dir, int& score);
 	bool isOver() const;
 	bool isFull() const;
 	int maxTile() const;
+	int zeroCount() const {
+		int count = 0;
+		for (int i = 0; i < 4; i++) {
+			for (int j = 0; j < 4; j++) {
+				if (board[i][j] == 0) count++;
+			}
+		}
+		return count;
+	}
 	inline static int get_fib_index(int fib);
 	friend ostream& operator<< (ostream& os, const MyBoard& board) {
 		for(int i = 0; i < 4; i++) {

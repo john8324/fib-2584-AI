@@ -72,9 +72,9 @@ inline static void reverse_rotate(int board[4][4], MoveDirection dir)
 	}
 }
 
-static void move_up(int board[4][4])
+static int move_up(int board[4][4])
 {
-	int tmp[4], tmp_count;
+	int tmp[4], tmp_count, score = 0;
 	// check each column
 	for (int j = 0; j < 4; j++) {
 		// compact
@@ -93,6 +93,7 @@ static void move_up(int board[4][4])
 			int mm = board[i][j] + board[i+1][j];
 			if (-1 != MyBoard::get_fib_index(mm)) {
 				board[i][j] = mm;
+				score += mm;
 				for (int ii = i+1; ii < 3; ii++) {
 					board[ii][j] = board[ii+1][j];
 				}
@@ -100,21 +101,22 @@ static void move_up(int board[4][4])
 			}
 		}
 	}
+	return score;
 }
 
-bool MyBoard::move(MoveDirection dir)
+bool MyBoard::move(MoveDirection dir, int &score)
 {
 	MyBoard ori = *this;
 	switch (dir) {
 		case MOVE_UP:
-			move_up(board);
+			score = move_up(board);
 			break;
 			
 		case MOVE_DOWN:
 		case MOVE_LEFT:
 		case MOVE_RIGHT:
 			rotate_to_up(board, dir);
-			move_up(board);
+			score = move_up(board);
 			reverse_rotate(board, dir);
 			break;
 			
@@ -128,7 +130,8 @@ bool MyBoard::isOver() const
 {
 	for (int i = 0; i < 4; i++) {
 		MyBoard tmp = *this;
-		if (tmp.move((MoveDirection)i)) return false;
+		int s;
+		if (tmp.move((MoveDirection)i, s)) return false;
 	}
 	return true;
 }
