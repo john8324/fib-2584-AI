@@ -21,7 +21,7 @@ TD::~TD()
 
 double TD::eval(const Feature &feature) const
 {
-	vector<int> f = feature.getFeature(); // sparse
+	vector<int> f = feature.getFeature(); // sparse binary feature
 	double sum = 0;
 	for (int i = 0; i < f.size(); i++) {
 		sum += weight[f[i]];
