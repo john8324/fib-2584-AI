@@ -1,5 +1,7 @@
 #include "TD.h"
 
+static int max_state = 0;
+
 TD::TD()
 {
 	weight.resize(1 << 23); // size of Feature
@@ -18,6 +20,7 @@ TD::~TD()
 		fwrite(&weight[0], sizeof(double), 1 << 23, fp);
 		fclose(fp);
 	}
+	cout << "max_state = " << max_state << endl;
 }
 
 double TD::eval(const Feature &feature) const
@@ -32,7 +35,7 @@ double TD::eval(const Feature &feature) const
 
 void TD::updateWeight()
 {
-	cout << afterStates.size() << endl;
+	max_state = afterStates.size() > max_state ? afterStates.size() : max_state;
 	auto last = afterStates.top();
 	afterStates.pop();
 	double Vstt = 5000; // V(s(t+1))
