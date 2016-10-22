@@ -9,10 +9,10 @@ using namespace std;
 
 void weightViewer()
 {
-	double *w = new double[1 << 23];
+	double *w = new double[1 << 22];
 	FILE *fp = fopen("TD_w.bin", "r");
 	if (fp) {
-		fread(w, sizeof(double), 1 << 23, fp);
+		fread(w, sizeof(double), 1 << 22, fp);
 		fclose(fp);
 	}
 	while (1) {
@@ -23,13 +23,13 @@ void weightViewer()
 		if (n < 0 || a < 0 || b < 0 || c < 0 || d < 0) {
 			break;
 		}
-		if (n >= 8 || a >= 32 || b >= 32 || c >= 32 || d >= 32) {
+		if (n >= 4 || a >= 32 || b >= 32 || c >= 32 || d >= 32) {
 			break;
 		}
 		printf("%d %d %d %d %d\n%e\n", n, a, b, c, d, w[n<<20|a<<15|b<<10|c<<5|d]);
 	}
-	cout << *max_element(w, w + (1 << 23)) << endl;
-	cout << *min_element(w, w + (1 << 23)) << endl;
+	cout << *max_element(w, w + (1 << 22)) << endl;
+	cout << *min_element(w, w + (1 << 22)) << endl;
 	delete[] w;
 }
 
