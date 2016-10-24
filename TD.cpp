@@ -39,17 +39,18 @@ void TD::updateWeight()
 	max_state = afterStates.size() > max_state ? afterStates.size() : max_state;
 	auto last = afterStates.top();
 	afterStates.pop();
-	double Vstt = 5000; // V(s(t+1))
-	if (last.first.maxTile() >= 610) {
-		// WIN
-		Vstt = 1000000;
-	} else if (last.first.isOver()) {
-		// LOSE
-		Vstt = -1000000;
-	} else {
+	if (!last.first.isOver()) {
 		cout << "LAST is NOT over!!!!!!" << endl;
 		throw ("LAST is NOT over!!!!!!");
 		return;
+	}
+	double Vstt; // V(s(t+1))
+	if (last.first.maxTile() >= 610) {
+		// WIN
+		Vstt = last.first.maxTile() * 1000;
+	} else {
+		// LOSE
+		Vstt = last.first.maxTile() * 10 - 1000000;
 	}
 	double rtt = last.second; // r(t+1)
 	while (!afterStates.empty()) {
