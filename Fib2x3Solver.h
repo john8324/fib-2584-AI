@@ -2,6 +2,8 @@
 #define __FIB2X3SOLVER_H__
 
 // include anything you might use
+#include <iostream>
+#include "MyBoard.h"
 
 class Fib2x3Solver
 {
@@ -18,6 +20,7 @@ public:
 	or define any variables you may need.
 	**********************************/
 private:
+	bool validPosition(int board[2][3]);
 
 };
 
