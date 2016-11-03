@@ -5,4 +5,4 @@ clean:
 	rm play_game
 
 run:
-	./play_game
+	./play_game < input.txt
