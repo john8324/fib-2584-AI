@@ -2,7 +2,7 @@
 #define __MYBOARD_H__
 
 #include <cstring>
-#include <random>
+#include <iostream>
 #include "Fib2584/MoveDirection.h"
 using namespace std;
 
