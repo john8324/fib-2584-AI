@@ -11,6 +11,7 @@ struct MyBoard{
 	// constructor
 	MyBoard() {memset(board, 0, sizeof(int) * 6);}
 	MyBoard(const int other[2][3]) {memcpy(board, other, sizeof(int) * 6);}
+	MyBoard(int comp);
 	MyBoard(const MyBoard &other) {*this = other;}
 	// operator
 	bool operator ==(const MyBoard& other) const {return 0 == memcmp(board, other.board, sizeof(int) * 6);}
@@ -29,6 +30,8 @@ struct MyBoard{
 		}
 		return count;
 	}
+	int compress() const;
+	static MyBoard extract(int comp) {return MyBoard(comp);}
 	inline static int get_fib_index(int fib);
 	friend ostream& operator<< (ostream& os, const MyBoard& board) {
 		for(int i = 0; i < 2; i++) {
@@ -39,11 +42,11 @@ struct MyBoard{
 		}
 		return os;
 	}
+	static const int _fib[32];
 };
 
 inline int MyBoard::get_fib_index(int fib)
 {
-	const int _fib[] = {0, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377, 610, 987, 1597, 2584, 4181, 6765, 10946, 17711, 28657, 46368, 75025, 121393, 196418, 317811, 514229, 832040, 1346269, 2178309};
 	if (fib < 0 || fib > _fib[31]) {
 		return -1;
 	}

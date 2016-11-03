@@ -1,5 +1,7 @@
 #include "MyBoard.h"
 
+const int MyBoard::_fib[] = {0, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377, 610, 987, 1597, 2584, 4181, 6765, 10946, 17711, 28657, 46368, 75025, 121393, 196418, 317811, 514229, 832040, 1346269, 2178309};
+
 static int move_up(int board[2][3])
 {
 	int tmp[2], tmp_count, score = 0;
@@ -82,6 +84,16 @@ static void flip_left_right(int board[2][3])
 	}
 }
 
+MyBoard::MyBoard(int comp)
+{
+	// extract
+	for (int i = 1; i >= 0; i--) {
+		for (int j = 2; j >= 0; j--) {
+			board[i][j] = _fib[comp & 0x1F];
+			comp = comp >> 5;
+		}
+	}
+}
 
 bool MyBoard::move(MoveDirection dir, int &score)
 {
@@ -142,4 +154,15 @@ int MyBoard::maxTile() const
 		}
 	}
 	return max;
+}
+
+int MyBoard::compress() const
+{
+	int comp = 0;
+	for (int i = 0; i < 2; i++) {
+		for (int j = 0; j < 3; j++) {
+			comp = comp << 5 | get_fib_index(board[i][j]);
+		}
+	}
+	return comp;
 }

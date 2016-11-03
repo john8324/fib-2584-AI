@@ -66,6 +66,10 @@ bool Fib2x3Solver::validPosition(int board[2][3])
 	if (!quick_valid(board)) {
 		return false;
 	}
+	MyBoard now(board);
+	int comp = now.compress();
+	MyBoard xd(comp);
+	cout << "test" << (now == xd) << endl;
 	return true;
 }
 
