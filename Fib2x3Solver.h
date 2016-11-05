@@ -3,12 +3,15 @@
 
 // include anything you might use
 #include <iostream>
+#include <stack>
+#include <map>
 #include "MyBoard.h"
 
 class Fib2x3Solver
 {
 public:
 	Fib2x3Solver();
+	~Fib2x3Solver();
 	// initialize solver
 	void initialize(int argc, char* argv[]);
 	// do some action when game over
@@ -21,6 +24,7 @@ public:
 	**********************************/
 private:
 	bool validPosition(int board[2][3]);
+	map<int, bool> _validPos;
 
 };
 

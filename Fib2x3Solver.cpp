@@ -18,8 +18,42 @@ static bool quick_valid(int board[2][3])
 	return flag;
 }
 
+static bool actual_valid(int _board)
+{
+	stack<int> st;
+	st.push(0);
+	while (!st.empty()) {
+		int top = st.top();
+		st.pop();
+		if (top == 0) {
+			// Generate roots
+			
+		}
+	}
+	return false;
+}
+
 Fib2x3Solver::Fib2x3Solver()
 {
+	FILE *fp = fopen("pos.txt", "r");
+	if (fp) {
+		int pos, valid;
+		while (2 == fscanf(fp, "%d%d", &pos, &valid)) {
+			_validPos[pos] = valid;
+		}
+		fclose(fp);
+	}
+}
+
+Fib2x3Solver::~Fib2x3Solver()
+{
+	FILE *fp = fopen("pos.txt", "w");
+	if (fp) {
+		for (auto it = _validPos.begin(); it != _validPos.end(); ++it) {
+			fprintf(fp, "%d %d\n", it->first, it->second);
+		}
+		fclose(fp);
+	}
 }
 
 void Fib2x3Solver::initialize(int argc, char* argv[])
@@ -68,9 +102,12 @@ bool Fib2x3Solver::validPosition(int board[2][3])
 	}
 	MyBoard now(board);
 	int comp = now.compress();
-	MyBoard xd(comp);
-	cout << "test" << (now == xd) << endl;
-	return true;
+	map<int, bool>::iterator it = _validPos.find(comp);
+	if (it != _validPos.end()) {
+		return it->second;
+	}
+	// Validate this board completely
+	return actual_valid(comp);
 }
 
 
