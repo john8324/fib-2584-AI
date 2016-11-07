@@ -98,6 +98,7 @@ MyBoard::MyBoard(int comp)
 bool MyBoard::move(MoveDirection dir, int &score)
 {
 	MyBoard ori = *this;
+	score = 0;
 	switch (dir) {
 		case MOVE_UP:
 			score = move_up(board);

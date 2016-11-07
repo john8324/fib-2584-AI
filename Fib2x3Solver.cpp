@@ -18,7 +18,7 @@ static bool quick_valid(int board[2][3])
 	return flag;
 }
 
-static bool actual_valid(int _board)
+static bool actual_valid(int _board, map<int, bool> &_validPos)
 {
 	stack<int> st;
 	st.push(0);
@@ -27,7 +27,59 @@ static bool actual_valid(int _board)
 		st.pop();
 		if (top == 0) {
 			// Generate roots
-			
+			int roots[4][2];
+			roots[0][0] = 1, roots[0][1] = 1;
+			roots[1][0] = 1, roots[1][1] = 3;
+			roots[2][0] = 3, roots[2][1] = 1;
+			roots[3][0] = 3, roots[3][1] = 3;
+			for (int r = 0; r < 4; r++) {
+				for (int a = 0; a < 6; a++) {
+					for (int b = a + 1; b < 6; b++) {
+						MyBoard tmp;
+						int *head = &(tmp.board[0][0]);
+						head[a] = roots[r][0];
+						head[b] = roots[r][1];
+						int comp = tmp.compress();
+						_validPos[comp] = true;
+						st.push(comp);
+					}
+				}
+			}
+		} else if (top == _board) {
+			return true;
+		} else {
+			cout << "st.size() = " << st.size() << endl;
+			// Generate next boards
+			MyBoard now(top), board(_board);
+			// Don't generate boards if "now" cannot generate _board
+			if (now.maxTile() <= board.maxTile()) {
+				MyBoard tmp = now;
+				int score = 0;
+				for (int d = 0; d < 4; d++) {
+					if (tmp.move((MoveDirection)d, score)) {
+						// Moved, generate all possible boards
+						for (int i = 0; i < 2; i++) {
+							for (int j = 0; j < 3; j++) {
+								int comp = 0;
+								if (tmp.board[i][j] == 0) {
+									// gen 1
+									tmp.board[i][j] = 1;
+									comp = tmp.compress();
+									_validPos[comp] = true;
+									st.push(comp);
+									// gen 3
+									tmp.board[i][j] = 3;
+									comp = tmp.compress();
+									_validPos[comp] = true;
+									st.push(comp);
+									// roll back
+									tmp.board[i][j] = 0;
+								}
+							}
+						}
+					}
+				}
+			}
 		}
 	}
 	return false;
@@ -107,7 +159,7 @@ bool Fib2x3Solver::validPosition(int board[2][3])
 		return it->second;
 	}
 	// Validate this board completely
-	return actual_valid(comp);
+	return actual_valid(comp, _validPos);
 }
 
 
