@@ -103,11 +103,12 @@ static bool actual_valid(int _board, map<int, bool> &_validPos)
 
 Fib2x3Solver::Fib2x3Solver()
 {
-	FILE *fp = fopen("pos.txt", "r");
+	FILE *fp = fopen("pos.bin", "r");
 	if (fp) {
-		int pos, valid;
-		while (2 == fscanf(fp, "%d%d", &pos, &valid)) {
-			_validPos[pos] = valid;
+		unsigned char buf[5];
+		while (5 == fread(buf, 1, 5, fp)) {
+			int pos = buf[3] << 24 | buf[2] << 16 | buf[1] << 8 | buf[0];
+			_validPos[pos] = buf[4];
 		}
 		fclose(fp);
 	}
@@ -115,10 +116,17 @@ Fib2x3Solver::Fib2x3Solver()
 
 Fib2x3Solver::~Fib2x3Solver()
 {
-	FILE *fp = fopen("pos.txt", "w");
+	FILE *fp = fopen("pos.bin", "w");
 	if (fp) {
 		for (auto it = _validPos.begin(); it != _validPos.end(); ++it) {
-			fprintf(fp, "%d %d\n", it->first, it->second);
+			int pos = it->first;
+			unsigned char buf[5];
+			buf[0] = pos & 0xFF;
+			buf[1] = pos >> 8 & 0xFF;
+			buf[2] = pos >> 16 & 0xFF;
+			buf[3] = pos >> 24 & 0xFF;
+			buf[4] = it -> second;
+			fwrite(buf, 1, 5, fp);
 		}
 		fclose(fp);
 	}
