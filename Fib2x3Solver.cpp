@@ -21,7 +21,13 @@ static bool quick_valid(int board[2][3])
 static bool actual_valid(int _board, map<int, bool> &_validPos)
 {
 	stack<int> st;
-	st.push(0);
+	st.push(0); // initial value
+	// push all valid positions
+	for (auto it = _validPos.begin(); it != _validPos.end(); ++it) {
+		if (it->second) {
+			st.push(it->first);
+		}
+	}
 	while (!st.empty()) {
 		int top = st.top();
 		st.pop();
@@ -40,8 +46,11 @@ static bool actual_valid(int _board, map<int, bool> &_validPos)
 						head[a] = roots[r][0];
 						head[b] = roots[r][1];
 						int comp = tmp.compress();
-						_validPos[comp] = true;
-						st.push(comp);
+						if (_validPos.find(comp) == _validPos.end()) {
+							// prevent pushing repeated states
+							_validPos[comp] = true;
+							st.push(comp);
+						}
 					}
 				}
 			}
@@ -65,13 +74,19 @@ static bool actual_valid(int _board, map<int, bool> &_validPos)
 									// gen 1
 									tmp.board[i][j] = 1;
 									comp = tmp.compress();
-									_validPos[comp] = true;
-									st.push(comp);
+									if (_validPos.find(comp) == _validPos.end()) {
+										// prevent pushing repeated states
+										_validPos[comp] = true;
+										st.push(comp);
+									}
 									// gen 3
 									tmp.board[i][j] = 3;
 									comp = tmp.compress();
-									_validPos[comp] = true;
-									st.push(comp);
+									if (_validPos.find(comp) == _validPos.end()) {
+										// prevent pushing repeated states
+										_validPos[comp] = true;
+										st.push(comp);
+									}
 									// roll back
 									tmp.board[i][j] = 0;
 								}
@@ -82,6 +97,7 @@ static bool actual_valid(int _board, map<int, bool> &_validPos)
 			}
 		}
 	}
+	_validPos[_board] = false;
 	return false;
 }
 

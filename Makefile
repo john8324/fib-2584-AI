@@ -1,5 +1,5 @@
 all:
-	g++ -std=c++11 -O0 *.cpp -o play_game
+	g++ -std=c++11 -Wall -O0 *.cpp -o play_game
 
 clean:
 	rm play_game
