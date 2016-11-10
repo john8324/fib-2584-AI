@@ -21,43 +21,41 @@ static bool quick_valid(int board[2][3])
 static bool actual_valid(int _board, map<int, bool> &_validPos)
 {
 	stack<int> st;
-	st.push(0); // initial value
 	// push all valid positions
 	for (auto it = _validPos.begin(); it != _validPos.end(); ++it) {
 		if (it->second) {
 			st.push(it->first);
 		}
 	}
+	if (st.empty()) {
+		// Generate roots
+		int roots[4][2];
+		roots[0][0] = 1, roots[0][1] = 1;
+		roots[1][0] = 1, roots[1][1] = 3;
+		roots[2][0] = 3, roots[2][1] = 1;
+		roots[3][0] = 3, roots[3][1] = 3;
+		for (int r = 0; r < 4; r++) {
+			for (int a = 0; a < 6; a++) {
+				for (int b = a + 1; b < 6; b++) {
+					MyBoard tmp;
+					int *head = &(tmp.board[0][0]);
+					head[a] = roots[r][0];
+					head[b] = roots[r][1];
+					int comp = tmp.compress();
+					// No need to check repeated states, just pushing them
+					_validPos[comp] = true;
+					st.push(comp);
+				}
+			}
+		}
+	}
 	while (!st.empty()) {
 		int top = st.top();
 		st.pop();
-		if (top == 0) {
-			// Generate roots
-			int roots[4][2];
-			roots[0][0] = 1, roots[0][1] = 1;
-			roots[1][0] = 1, roots[1][1] = 3;
-			roots[2][0] = 3, roots[2][1] = 1;
-			roots[3][0] = 3, roots[3][1] = 3;
-			for (int r = 0; r < 4; r++) {
-				for (int a = 0; a < 6; a++) {
-					for (int b = a + 1; b < 6; b++) {
-						MyBoard tmp;
-						int *head = &(tmp.board[0][0]);
-						head[a] = roots[r][0];
-						head[b] = roots[r][1];
-						int comp = tmp.compress();
-						if (_validPos.find(comp) == _validPos.end()) {
-							// prevent pushing repeated states
-							_validPos[comp] = true;
-							st.push(comp);
-						}
-					}
-				}
-			}
-		} else if (top == _board) {
+		if (top == _board) {
 			return true;
 		} else {
-			cout << "st.size() = " << st.size() << endl;
+			//cout << "st.size() = " << st.size() << endl;
 			// Generate next boards
 			MyBoard now(top), board(_board);
 			// Don't generate boards if "now" cannot generate _board
