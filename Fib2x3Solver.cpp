@@ -99,9 +99,55 @@ static bool actual_valid(int _board, map<int, bool> &_validPos)
 	return false;
 }
 
-static double eval_expected(int _board)
+static double eval_expected(int _board, int d = 0)
 {
-	return 0;
+	if (d < 0 || d > 10) {
+		return 0;
+	}
+	MyBoard now(_board);
+	//cout << "eval_expected::now = " << endl << now << endl;
+	//cout << "depth = " << d << endl;
+	int zero = now.zeroCount();
+	if (zero == 0) {
+		return 0;
+	}
+	double expected = 0;
+	for (int i = 0; i < 2; i++) {
+		for (int j = 0; j < 3; j++) {
+			if (now.board[i][j] == 0) {
+				// gen 1
+				now.board[i][j] = 1;
+				int move_count = 0;
+				double tmp_exp = 0;
+				for (int dir = 0; dir < 4; dir++) {
+					MyBoard tmp(now);
+					int score = 0;
+					if (tmp.move((MoveDirection)dir, score)) {
+						tmp_exp += score + eval_expected(tmp.compress(), d + 1);
+						move_count++;
+					}
+				}
+				expected += move_count == 0 ? 0 : 0.75 * tmp_exp / move_count;
+				// gen 3
+				now.board[i][j] = 3;
+				move_count = 0;
+				tmp_exp = 0;
+				for (int dir = 0; dir < 4; dir++) {
+					MyBoard tmp(now);
+					int score = 0;
+					if (tmp.move((MoveDirection)dir, score)) {
+						tmp_exp += score + eval_expected(tmp.compress(), d + 1);
+						move_count++;
+					}
+				}
+				expected += move_count == 0 ? 0 : 0.25 * tmp_exp / move_count;
+				// roll back
+				now.board[i][j] = 0;
+			}
+		}
+	}
+	//cout << "expected / zero = " << expected / zero << endl;
+	return expected / zero;
 }
 
 Fib2x3Solver::Fib2x3Solver()
@@ -158,6 +204,7 @@ double Fib2x3Solver::evaluteExpectedScore(int board[2][3])
 			max_expected = expected > max_expected ? expected : max_expected;
 		}
 	}
+	cout << "max_expected = " << max_expected << endl;
 	return max_expected;
 }
 
