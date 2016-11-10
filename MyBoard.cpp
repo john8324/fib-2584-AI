@@ -59,7 +59,7 @@ static int move_left(int board[2][3])
 				for (int jj = j+1; jj < 2; jj++) {
 					board[i][jj] = board[i][jj+1];
 				}
-				board[2][i] = 0;
+				board[i][2] = 0;
 			}
 		}
 	}
