@@ -99,6 +99,11 @@ static bool actual_valid(int _board, map<int, bool> &_validPos)
 	return false;
 }
 
+static double eval_expected(int _board)
+{
+	return 0;
+}
+
 Fib2x3Solver::Fib2x3Solver()
 {
 	FILE *fp = fopen("pos.bin", "r");
@@ -137,10 +142,23 @@ void Fib2x3Solver::initialize(int argc, char* argv[])
 
 double Fib2x3Solver::evaluteExpectedScore(int board[2][3])
 {
+	MyBoard after[4] = {board, board, board, board};
 	if (!validPosition(board)) {
 		return -1;
 	}
-	return 0;
+	double max_expected = 0;
+	for (int i = 0; i < 4; i++) {
+		int score = 0;
+		bool flag = after[i].move((MoveDirection)i, score);
+		//cout << flag << endl;
+		//cout << score << endl;
+		//cout << after[i] << endl;
+		if (flag) {
+			double expected = score + eval_expected(after[i].compress());
+			max_expected = expected > max_expected ? expected : max_expected;
+		}
+	}
+	return max_expected;
 }
 
 // 0: up
