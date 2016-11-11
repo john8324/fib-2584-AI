@@ -25,6 +25,7 @@ public:
 private:
 	bool validPosition(int board[2][3]);
 	map<int, bool> _validPos;
+	map<int, pair<double, int>> _expectedDataBase;
 
 };
 
