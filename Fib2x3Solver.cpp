@@ -117,11 +117,12 @@ static double eval_expected(int _board, int d, map<int, pair<double, int>> &_exp
 		return 0;
 	}
 	MyBoard now(_board);
-	//cout << "eval_expected::now = " << endl << now << endl;
-	//cout << "depth = " << d << endl;
+	cout << "eval_expected::now = " << endl << now << endl;
+	cout << "depth = " << d << endl;
 	int zero = now.zeroCount();
 	if (zero == 0) {
 		_expectedDataBase[_board] = pair<double, int>(0, d);
+		cout << "expected = " << 0 << endl;
 		return 0;
 	}
 	double expected = 0;
@@ -136,6 +137,7 @@ static double eval_expected(int _board, int d, map<int, pair<double, int>> &_exp
 					MyBoard tmp(now);
 					int score = 0;
 					if (tmp.move((MoveDirection)dir, score)) {
+						cout << "score = " << score << endl;
 						tmp_exp += score + eval_expected(tmp.compress(), d + 1, _expectedDataBase);
 						move_count++;
 					}
@@ -149,6 +151,7 @@ static double eval_expected(int _board, int d, map<int, pair<double, int>> &_exp
 					MyBoard tmp(now);
 					int score = 0;
 					if (tmp.move((MoveDirection)dir, score)) {
+						cout << "score = " << score << endl;
 						tmp_exp += score + eval_expected(tmp.compress(), d + 1, _expectedDataBase);
 						move_count++;
 					}
@@ -161,7 +164,7 @@ static double eval_expected(int _board, int d, map<int, pair<double, int>> &_exp
 	}
 	expected /= zero;
 	_expectedDataBase[_board] = pair<double, int>(expected, d);
-	//cout << "expected = " << expected << endl;
+	cout << "expected = " << expected << endl;
 	return expected;
 }
 
@@ -241,7 +244,7 @@ double Fib2x3Solver::evaluteExpectedScore(int board[2][3])
 		int score = 0;
 		bool flag = after[i].move((MoveDirection)i, score);
 		//cout << flag << endl;
-		//cout << score << endl;
+		cout << score << endl;
 		//cout << after[i] << endl;
 		if (flag) {
 			double expected = score + eval_expected(after[i].compress(), 0, _expectedDataBase);
