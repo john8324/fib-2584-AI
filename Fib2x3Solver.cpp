@@ -112,10 +112,6 @@ static double eval_expected(int _board, int d, map<int, pair<double, int>> &_exp
 			return it->second.first;
 		}
 	}
-	if (d > 100) {
-		_expectedDataBase[_board] = pair<double, int>(0, d);
-		return 0;
-	}
 	MyBoard now(_board);
 	cout << "eval_expected::now = " << endl << now << endl;
 	cout << "depth = " << d << endl;
@@ -283,6 +279,7 @@ you may need.
 
 bool Fib2x3Solver::validPosition(int board[2][3])
 {
+	return true;
 	if (!quick_valid(board)) {
 		return false;
 	}
