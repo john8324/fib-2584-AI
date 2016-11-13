@@ -113,12 +113,12 @@ static double eval_expected(int _board, int d, map<int, pair<double, int>> &_exp
 		}
 	}
 	MyBoard now(_board);
-	cout << "eval_expected::now = " << endl << now << endl;
-	cout << "depth = " << d << endl;
+	//cout << "eval_expected::now = " << endl << now << endl;
+	//cout << "depth = " << d << endl;
 	int zero = now.zeroCount();
 	if (zero == 0) {
 		_expectedDataBase[_board] = pair<double, int>(0, d);
-		cout << "expected = " << 0 << endl;
+		//cout << "expected = " << 0 << endl;
 		return 0;
 	}
 	double expected = 0;
@@ -156,7 +156,7 @@ static double eval_expected(int _board, int d, map<int, pair<double, int>> &_exp
 	}
 	expected /= zero;
 	_expectedDataBase[_board] = pair<double, int>(expected, d);
-	cout << "expected = " << expected << endl;
+	//cout << "expected = " << expected << endl;
 	return expected;
 }
 
@@ -235,15 +235,12 @@ double Fib2x3Solver::evaluteExpectedScore(int board[2][3])
 	for (int i = 0; i < 4; i++) {
 		int score = 0;
 		bool flag = after[i].move((MoveDirection)i, score);
-		//cout << flag << endl;
-		cout << score << endl;
-		//cout << after[i] << endl;
 		if (flag) {
 			double expected = score + eval_expected(after[i].compress(), 0, _expectedDataBase);
 			max_expected = expected > max_expected ? expected : max_expected;
 		}
 	}
-	cout << "max_expected = " << max_expected << endl;
+	//cout << "max_expected = " << max_expected << endl;
 	return max_expected;
 }
 
@@ -258,14 +255,20 @@ int Fib2x3Solver::findBestMove(int board[2][3])
 	if (!validPosition(board)) {
 		return -1;
 	}
+	int max_dir = -1;
+	double max_expected = 0;
 	for (int i = 0; i < 4; i++) {
 		int score = 0;
 		bool flag = after[i].move((MoveDirection)i, score);
-		cout << flag << endl;
-		cout << score << endl;
-		cout << after[i] << endl;
+		if (flag) {
+			double expected = score + eval_expected(after[i].compress(), 0, _expectedDataBase);
+			if (expected > max_expected) {
+				max_expected = expected;
+				max_dir = i;
+			}
+		}
 	}
-	return -1;
+	return max_dir;
 }
 
 /**********************************
