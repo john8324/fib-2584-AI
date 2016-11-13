@@ -60,9 +60,9 @@ static bool actual_valid(int _board, map<int, bool> &_validPos)
 			MyBoard now(top), board(_board);
 			// Don't generate boards if "now" cannot generate _board
 			if (now.maxTile() <= board.maxTile()) {
-				MyBoard tmp = now;
 				int score = 0;
 				for (int d = 0; d < 4; d++) {
+					MyBoard tmp = now;
 					if (tmp.move((MoveDirection)d, score)) {
 						// Moved, generate all possible boards
 						for (int i = 0; i < 2; i++) {
@@ -279,7 +279,6 @@ you may need.
 
 bool Fib2x3Solver::validPosition(int board[2][3])
 {
-	return true;
 	if (!quick_valid(board)) {
 		return false;
 	}
