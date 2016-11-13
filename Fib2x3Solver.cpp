@@ -127,32 +127,28 @@ static double eval_expected(int _board, int d, map<int, pair<double, int>> &_exp
 			if (now.board[i][j] == 0) {
 				// gen 1
 				now.board[i][j] = 1;
-				int move_count = 0;
-				double tmp_exp = 0;
+				double max_tmp_exp = 0;
 				for (int dir = 0; dir < 4; dir++) {
 					MyBoard tmp(now);
 					int score = 0;
 					if (tmp.move((MoveDirection)dir, score)) {
-						cout << "score = " << score << endl;
-						tmp_exp += score + eval_expected(tmp.compress(), d + 1, _expectedDataBase);
-						move_count++;
+						double tmp_exp = score + eval_expected(tmp.compress(), d + 1, _expectedDataBase);
+						max_tmp_exp = tmp_exp > max_tmp_exp ? tmp_exp : max_tmp_exp;
 					}
 				}
-				expected += move_count == 0 ? 0 : 0.75 * tmp_exp / move_count;
+				expected += max_tmp_exp * 0.75;
 				// gen 3
 				now.board[i][j] = 3;
-				move_count = 0;
-				tmp_exp = 0;
+				max_tmp_exp = 0;
 				for (int dir = 0; dir < 4; dir++) {
 					MyBoard tmp(now);
 					int score = 0;
 					if (tmp.move((MoveDirection)dir, score)) {
-						cout << "score = " << score << endl;
-						tmp_exp += score + eval_expected(tmp.compress(), d + 1, _expectedDataBase);
-						move_count++;
+						double tmp_exp = score + eval_expected(tmp.compress(), d + 1, _expectedDataBase);
+						max_tmp_exp = tmp_exp > max_tmp_exp ? tmp_exp : max_tmp_exp;
 					}
 				}
-				expected += move_count == 0 ? 0 : 0.25 * tmp_exp / move_count;
+				expected += max_tmp_exp * 0.25;
 				// roll back
 				now.board[i][j] = 0;
 			}
