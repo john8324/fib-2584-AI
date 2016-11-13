@@ -99,26 +99,17 @@ static bool actual_valid(int _board, map<int, bool> &_validPos)
 	return false;
 }
 
-static double eval_expected(int _board, int d, map<int, pair<double, int>> &_expectedDataBase)
+static double eval_expected(int _board, map<int, double> &_expectedDataBase)
 {
-	if (d < 0) {
-		cout << "FAIL: wrong depth!!" << endl;
-		return 0;
-	}
 	// check database
 	auto it = _expectedDataBase.find(_board);
 	if (it != _expectedDataBase.end()) {
-		if (it->second.second <= d) {
-			return it->second.first;
-		}
+		return it->second;
 	}
 	MyBoard now(_board);
-	//cout << "eval_expected::now = " << endl << now << endl;
-	//cout << "depth = " << d << endl;
 	int zero = now.zeroCount();
 	if (zero == 0) {
-		_expectedDataBase[_board] = pair<double, int>(0, d);
-		//cout << "expected = " << 0 << endl;
+		_expectedDataBase[_board] = 0;
 		return 0;
 	}
 	double expected = 0;
@@ -132,7 +123,7 @@ static double eval_expected(int _board, int d, map<int, pair<double, int>> &_exp
 					MyBoard tmp(now);
 					int score = 0;
 					if (tmp.move((MoveDirection)dir, score)) {
-						double tmp_exp = score + eval_expected(tmp.compress(), d + 1, _expectedDataBase);
+						double tmp_exp = score + eval_expected(tmp.compress(), _expectedDataBase);
 						max_tmp_exp = tmp_exp > max_tmp_exp ? tmp_exp : max_tmp_exp;
 					}
 				}
@@ -144,7 +135,7 @@ static double eval_expected(int _board, int d, map<int, pair<double, int>> &_exp
 					MyBoard tmp(now);
 					int score = 0;
 					if (tmp.move((MoveDirection)dir, score)) {
-						double tmp_exp = score + eval_expected(tmp.compress(), d + 1, _expectedDataBase);
+						double tmp_exp = score + eval_expected(tmp.compress(), _expectedDataBase);
 						max_tmp_exp = tmp_exp > max_tmp_exp ? tmp_exp : max_tmp_exp;
 					}
 				}
@@ -155,7 +146,7 @@ static double eval_expected(int _board, int d, map<int, pair<double, int>> &_exp
 		}
 	}
 	expected /= zero;
-	_expectedDataBase[_board] = pair<double, int>(expected, d);
+	_expectedDataBase[_board] = expected;
 	//cout << "expected = " << expected << endl;
 	return expected;
 }
@@ -173,12 +164,11 @@ Fib2x3Solver::Fib2x3Solver()
 	}
 	fp = fopen("expected_db.bin", "r");
 	if (fp) {
-		unsigned char buf[16];
-		while (16 == fread(buf, 1, 16, fp)) {
+		unsigned char buf[12];
+		while (12 == fread(buf, 1, 12, fp)) {
 			int pos = buf[3] << 24 | buf[2] << 16 | buf[1] << 8 | buf[0];
-			int d = buf[7] << 24 | buf[6] << 16 | buf[5] << 8 | buf[4];
-			double expected = *((double*)(buf + 8));
-			_expectedDataBase[pos] = pair<double, int>(expected, d);
+			double expected = *((double*)(buf + 4));
+			_expectedDataBase[pos] = expected;
 		}
 		fclose(fp);
 	}
@@ -203,18 +193,14 @@ Fib2x3Solver::~Fib2x3Solver()
 	fp = fopen("expected_db.bin", "w");
 	if (fp) {
 		for (auto it = _expectedDataBase.begin(); it != _expectedDataBase.end(); ++it) {
-			int pos = it->first, d = it->second.second;
-			unsigned char buf[8];
+			int pos = it->first;
+			unsigned char buf[4];
 			buf[0] = pos & 0xFF;
 			buf[1] = pos >> 8 & 0xFF;
 			buf[2] = pos >> 16 & 0xFF;
 			buf[3] = pos >> 24 & 0xFF;
-			buf[4] = d & 0xFF;
-			buf[5] = d >> 8 & 0xFF;
-			buf[6] = d >> 16 & 0xFF;
-			buf[7] = d >> 24 & 0xFF;
-			fwrite(buf, 1, 8, fp);
-			fwrite(&(it->second.first), 8, 1, fp);
+			fwrite(buf, 1, 4, fp);
+			fwrite(&(it->second), 8, 1, fp);
 		}
 		fclose(fp);
 	}
@@ -236,7 +222,7 @@ double Fib2x3Solver::evaluteExpectedScore(int board[2][3])
 		int score = 0;
 		bool flag = after[i].move((MoveDirection)i, score);
 		if (flag) {
-			double expected = score + eval_expected(after[i].compress(), 0, _expectedDataBase);
+			double expected = score + eval_expected(after[i].compress(), _expectedDataBase);
 			max_expected = expected > max_expected ? expected : max_expected;
 		}
 	}
@@ -261,7 +247,7 @@ int Fib2x3Solver::findBestMove(int board[2][3])
 		int score = 0;
 		bool flag = after[i].move((MoveDirection)i, score);
 		if (flag) {
-			double expected = score + eval_expected(after[i].compress(), 0, _expectedDataBase);
+			double expected = score + eval_expected(after[i].compress(), _expectedDataBase);
 			if (expected > max_expected) {
 				max_expected = expected;
 				max_dir = i;
