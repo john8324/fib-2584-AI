@@ -242,7 +242,7 @@ int Fib2x3Solver::findBestMove(int board[2][3])
 		return -1;
 	}
 	int max_dir = -1;
-	double max_expected = 0;
+	double max_expected = -1;
 	for (int i = 0; i < 4; i++) {
 		int score = 0;
 		bool flag = after[i].move((MoveDirection)i, score);
