@@ -4,6 +4,7 @@
 #include <cstdlib>
 #include <ctime>
 #include "Fib2584/Typedefs.h"
+#include "MyBoard.h"
 
 class Fib2584Ai
 {

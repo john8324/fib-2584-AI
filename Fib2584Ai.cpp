@@ -13,8 +13,20 @@ void Fib2584Ai::initialize(int argc, char* argv[])
 
 MoveDirection Fib2584Ai::generateMove( int board[4][4] )
 {
-	MoveDirection randomMove = static_cast<MoveDirection>(rand() % 4);
-	return randomMove;
+	MyBoard after[] = {board, board, board, board};
+	int max_dir = -1;
+	double max_score = -1e300;
+	for (int i = 0; i < 4; i++) {
+		int r;
+		if (after[i].move(static_cast<MoveDirection>(i), r)) {
+			const double score = after[i].zeroCount() + 0.01 * after[i].maxTile();
+			if (score > max_score) {
+				max_score = score;
+				max_dir = i;
+			}
+		}
+	}
+	return static_cast<MoveDirection>(max_dir);
 }
 
 int Fib2584Ai::generateEvilMove(int board[4][4])
