@@ -3,3 +3,7 @@ client:
 
 stdio:
 	g++ *.cpp main/main.cpp Fib2584/*.cpp -o ai_stdio -O3
+
+play:
+	g++ *.cpp main/play_main.cpp Fib2584/*.cpp -o play_game -O3
+
