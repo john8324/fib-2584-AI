@@ -35,7 +35,12 @@ int main(int argc, char* argv[])
 			if(originalBoard == gameBoard)
 				continue;
 			statistic.increaseOneMove();
-			gameBoard.addRandomTile();
+
+			gameBoard.getArrayBoard(arrayBoard);
+			int ei = ai.generateEvilMove(arrayBoard);
+			arrayBoard[ei/4][ei%4] = rand() % 100 < 75 ? 1 : 3;
+			gameBoard = GameBoard(MyBoard(arrayBoard).compress());
+			//gameBoard.addRandomTile();
 		}
 		gameBoard.getArrayBoard(arrayBoard);
 		ai.gameOver(arrayBoard, iScore);

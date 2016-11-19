@@ -17,6 +17,7 @@ private:
 	static Random random_;
 public:
 	GameBoard();
+	GameBoard(const BitBoard& board) {board_ = board;} // My function
 	void initialize();
 	int move(MoveDirection moveDirection);
 	void addRandomTile();
