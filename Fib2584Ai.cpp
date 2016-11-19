@@ -19,7 +19,13 @@ MoveDirection Fib2584Ai::generateMove( int board[4][4] )
 
 int Fib2584Ai::generateEvilMove(int board[4][4])
 {
-	return rand() % 16;
+	while (1) {
+		int i = rand() % 16;
+		if (board[i/4][i%4] == 0) {
+			return i;
+		}
+	}
+	return 0;
 }
 
 void Fib2584Ai::gameOver(int board[4][4], int iScore)
