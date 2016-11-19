@@ -27,6 +27,19 @@ struct MyBoard{
 		}
 		return count;
 	}
+	BitBoard compress() const {
+		BitBoard comp;
+		for (int i = 0; i < 4; i++) {
+			for (int j = 0; j < 4; j++) {
+				int id = get_fib_index(board[i][j]);
+				if (id < 0 || id >= 32) {
+					cout << "id = " << id << endl;
+				}
+				comp = (comp << 5) | BitBoard(id);
+			}
+		}
+		return comp;
+	}
 	inline static int get_fib_index(int fib);
 	friend ostream& operator<< (ostream& os, const MyBoard& board) {
 		for(int i = 0; i < 4; i++) {
