@@ -1,8 +1,5 @@
-all:
-	g++ -std=c++11 -Wall -O3 *.cpp -o play_game
+client:
+	g++ *.cpp main/client_main.cpp Fib2584/*.cpp -o ai_client
 
-clean:
-	rm play_game *.bin
-
-run:
-	./play_game < input.txt
+stdio:
+	g++ *.cpp main/main.cpp Fib2584/*.cpp -o ai_stdio

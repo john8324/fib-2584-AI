@@ -1,0 +1,159 @@
+For the fourth project, you need to write an AI program that makes the game Fib-2584 more difficult (we will refer to it as EVIL):
+
+This evil program tries to generate new tiles in the worst possible location so that the player will lose as soon as possible
+
+ 
+
+The attached framework is similar to project 1, but you need to add a function:
+
+-generateEvilMove for your evil program
+
+===================================================================================================================
+
+ 
+
+Some implementation details:
+
+The index of the arrayBoard is as follows:
+
+0 1 2 3
+
+4 5 6 7
+
+8 9 10 11
+
+12 13 14 15
+
+ 
+
+New tiles are deterministic; 1 1 1 3
+
+New tiles always come in the order of: 1, 1, 1, 3, 1, 1, 1, 3...
+
+ 
+
+E.g.
+
+Initial board is completely empty.
+
+move 0: 15     <--- evil places the first 1 at the bottom right hand corner
+
+move 1: 1       <--- evil places 1 at location 1
+
+play: down     <--- player chooses to move down
+
+move 2: 2       <--- evil places another 1 at location 2
+
+play: right       <--- player moves right
+
+move 3: 7       <--- evil places a 3 at location 7
+
+play: down
+
+...
+
+ 
+
+Timing control:
+
+You should make your program run 10000 moves/sec minimum, but the faster the better (we can finish the competition earlier and everyone can go home!).
+
+If you spend more than 5 seconds per move, it is guaranteed that you will be disqualified.
+
+===================================================================================================================
+
+If the evil program attempts an invalid move, the player gets 50 bonus points. We then generate the new tile in a random empty grid for the evil program.
+
+If the player program attempts an invalid move, 50 points are taken off for the player. We then choose a random valid direction for the player.
+
+E.g.
+
+0 0 0 0
+
+0 0 0 0
+
+0 0 0 0
+
+0 0 3 3
+
+ 
+
+If the player chooses to move right, it is an invalid move.
+
+If evil decides to place new tile in 14 or 15, it is an invalid move.
+
+===================================================================================================================
+
+ 
+
+The platform is now online. Please follow these instructions to test your program:
+
+1. There are two main files inside the /main path: use main.cpp if you want to test your program with stdio (your keyboard), or client_main.cpp for the competition platform.
+
+You may use the included makefile.
+
+i.e., "make stdio" will compile the stdio program, "make client" to compile the competition version.
+
+ 
+
+2. To use your stdio program, you can use the following two commands:
+
+input:
+
+genmove play 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16
+
+output:
+
+up/down/left/right
+
+ 
+
+input:
+
+genmove evil 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16
+
+output:
+
+[0-15]
+
+ 
+
+3. To use the client version of the program, type your student id and a pass phrase like so:
+
+./ai_client 2584 ting
+
+ 
+
+if the connection is successful, you should see the following
+
+AI initialized
+
+Connect to game server
+
+Student ID: 2584
+
+Pass phrase: ting
+
+Waiting message
+
+ 
+
+4. Open your browser and go the the page:
+
+http://140.113.167.52:21680
+
+ 
+
+5. Fill in both roles, then click on "Start Game"!
+
+ 
+
+The attached framework contains two random AI routines for player and evil. So you can try the above steps first.
+
+====================================================================================================================
+
+You can test your evil program against our sample program.
+The ID is 0511
+The pass phrase is "testAI"
+
+E-mail me if you have any problems. Good luck!
