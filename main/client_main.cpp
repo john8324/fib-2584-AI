@@ -37,8 +37,8 @@ int main(int argc, char* argv[])
 	/* initialize value in dest */
 	bzero(&dest, sizeof(dest));
 	dest.sin_family = PF_INET;
-	dest.sin_port = htons(21684);
-	dest.sin_addr.s_addr = inet_addr("140.113.167.52");
+	dest.sin_port = htons(2584);
+	dest.sin_addr.s_addr = inet_addr("127.0.0.1");
 
 	/* Connecting to server */
 	int status = connect(sockfd, (struct sockaddr*)&dest, sizeof(dest));
@@ -72,6 +72,11 @@ int main(int argc, char* argv[])
         dup2(sockfd, 0);
         getline(cin, sInput);
         dup2(tempStdinFd, 0);
+		if(sInput == "")
+		{
+			cout << "Server has closed the connection." << endl;
+			break;
+		}
         cout << "Receive command: " << sInput << endl;
         
         // handle all genmoves
