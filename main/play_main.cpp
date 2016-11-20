@@ -38,7 +38,7 @@ int main(int argc, char* argv[])
 
 			gameBoard.getArrayBoard(arrayBoard);
 			int ei = ai.generateEvilMove(arrayBoard);
-			arrayBoard[ei/4][ei%4] = rand() % 100 < 75 ? 1 : 3;
+			arrayBoard[ei/4][ei%4] = ai.move_count & 3 ? 1 : 3;
 			gameBoard = GameBoard(MyBoard(arrayBoard).compress());
 			//gameBoard.addRandomTile();
 		}

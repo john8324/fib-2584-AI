@@ -2,6 +2,7 @@
 
 Fib2584Ai::Fib2584Ai()
 {
+	move_count = 0;
 }
 
 void Fib2584Ai::initialize(int argc, char* argv[])
@@ -26,11 +27,13 @@ MoveDirection Fib2584Ai::generateMove( int board[4][4] )
 			}
 		}
 	}
+	move_count = max_dir == -1 ? 0 : move_count;
 	return static_cast<MoveDirection>(max_dir);
 }
 
 int Fib2584Ai::generateEvilMove(int board[4][4])
 {
+	int next = (++move_count) & 3 ? 1 : 3;
 	while (1) {
 		int i = rand() % 16;
 		if (board[i/4][i%4] == 0) {
@@ -42,7 +45,7 @@ int Fib2584Ai::generateEvilMove(int board[4][4])
 
 void Fib2584Ai::gameOver(int board[4][4], int iScore)
 {
-	return;
+	move_count = 0;
 }
 
 /**********************************

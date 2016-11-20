@@ -23,6 +23,7 @@ public:
 	You can implement any additional functions
 	or define any variables you may need.
 	**********************************/
+	int move_count;
 };
 
 #endif
