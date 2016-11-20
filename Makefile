@@ -1,3 +1,6 @@
+all: client stdio play
+	
+
 client:
 	g++ *.cpp main/client_main.cpp Fib2584/*.cpp -o ai_client -O3
 
