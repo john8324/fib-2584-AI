@@ -10,3 +10,6 @@ stdio:
 play:
 	g++ *.cpp main/play_main.cpp Fib2584/*.cpp -o play_game -O3
 
+clean:
+	rm -f ai_client ai_stdio play_game
+
