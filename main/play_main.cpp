@@ -23,9 +23,17 @@ int main(int argc, char* argv[])
 	// play each round
 	for(int i = 0;i < iPlayRounds;i++) {
 		GameBoard gameBoard;
-		gameBoard.initialize();
-		int iScore = 0;
 		int arrayBoard[4][4];
+		gameBoard.getArrayBoard(arrayBoard);
+		int ei = ai.generateEvilMove(arrayBoard);
+		arrayBoard[ei/4][ei%4] = ai.move_count & 3 ? 1 : 3;
+		gameBoard = GameBoard(MyBoard(arrayBoard).compress());
+		//gameBoard.getArrayBoard(arrayBoard);
+		ei = ai.generateEvilMove(arrayBoard);
+		arrayBoard[ei/4][ei%4] = ai.move_count & 3 ? 1 : 3;
+		gameBoard = GameBoard(MyBoard(arrayBoard).compress());
+		//gameBoard.initialize();
+		int iScore = 0;
 		while(!gameBoard.terminated()) {
 			gameBoard.getArrayBoard(arrayBoard);
 			MoveDirection moveDirection = ai.generateMove(arrayBoard);
