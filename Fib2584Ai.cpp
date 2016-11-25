@@ -1,12 +1,62 @@
 #include "Fib2584Ai.h"
 
+#define MAX_DEPTH 8
+
+static double G3(const MyBoard &board, double alpha, double beta, int d);
+
+static double F3(const MyBoard &board, double alpha, double beta, int d)
+{
+	// Fail soft alpha-beta
+	//printf("alpha = %f    beta = %f    d = %d\n", alpha, beta, d);
+	if (d >= MAX_DEPTH) {
+		return board.maxTile();
+	}
+	MyBoard after[] = {board, board, board, board};
+	double m = -1e300;
+	int count = 0;
+	for (int i = 0; i < 4; i++) {
+		int r;
+		if (after[i].move(static_cast<MoveDirection>(i), r)) {
+			count++;
+			alpha = m > alpha ? m : alpha;
+			double t = G3(after[i], alpha, beta, d + 1);
+			m = t > m ? t : m;
+			if (m >= beta) return m;
+		}
+	}
+	return count ? m : board.maxTile();
+}
+
+static double G3(const MyBoard &board, double alpha, double beta, int d)
+{
+	// Fail soft alpha-beta
+	//printf("alpha = %f    beta = %f    d = %d\n", alpha, beta, d);
+	if (d >= MAX_DEPTH) {
+		return board.maxTile();
+	}
+	double m = 1e300;
+	int count = 0;
+	for (int i = 0; i < 4; i++) {
+		for (int j = 0; j < 4; j++) {
+			if (board.board[i][j] == 0) {
+				for (int k = 1; k <= 3; k += 2) {
+					MyBoard after(board);
+					after.board[i][j] = k;
+					count++;
+					beta = m < beta ? m : beta;
+					double t = F3(after, alpha, beta, d + 1);
+					m = t < m ? t : m;
+					if (m <= alpha) return m;
+				}
+			}
+		}
+	}
+	return count ? m : board.maxTile();
+}
+
 static void eval_evil(const MyBoard &board, double &val)
 {
-	val = 0;
-	int r;
-	for (int i = 0; i < 4; i++) {
-		val += MyBoard(board).move((MoveDirection)i, r);
-	}
+	val = F3(board, board.maxTile() + 1, board.maxTile() + 2, 0);
 }
 
 Fib2584Ai::Fib2584Ai()
