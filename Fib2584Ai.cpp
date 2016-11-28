@@ -92,6 +92,11 @@ MoveDirection Fib2584Ai::generateMove( int board[4][4] )
 int Fib2584Ai::generateEvilMove(int board[4][4])
 {
 	int next = (++move_count) & 3 ? 1 : 3;
+	if (move_count == 1) {
+		return 0;
+	} else if (move_count == 2) {
+		return 15;
+	}
 	int min_i = -1;
 	double min_val = 1e300;
 	for (int i = 0; i < 16; i++) {
