@@ -2,9 +2,9 @@
 
 #define MAX_DEPTH 8
 
-static double G3(const MyBoard &board, double alpha, double beta, int d);
+static double G3(const MyBoard &board, double alpha, double beta, int d, int evil_count);
 
-static double F3(const MyBoard &board, double alpha, double beta, int d)
+static double F3(const MyBoard &board, double alpha, double beta, int d, int evil_count)
 {
 	// Fail soft alpha-beta
 	//printf("alpha = %f    beta = %f    d = %d\n", alpha, beta, d);
@@ -19,7 +19,7 @@ static double F3(const MyBoard &board, double alpha, double beta, int d)
 		if (after[i].move(static_cast<MoveDirection>(i), r)) {
 			count++;
 			alpha = m > alpha ? m : alpha;
-			double t = G3(after[i], alpha, beta, d + 1);
+			double t = G3(after[i], alpha, beta, d + 1, evil_count + 1);
 			m = t > m ? t : m;
 			if (m >= beta) return m;
 		}
@@ -27,7 +27,7 @@ static double F3(const MyBoard &board, double alpha, double beta, int d)
 	return count ? m : board.maxTile();
 }
 
-static double G3(const MyBoard &board, double alpha, double beta, int d)
+static double G3(const MyBoard &board, double alpha, double beta, int d, int evil_count)
 {
 	// Fail soft alpha-beta
 	//printf("alpha = %f    beta = %f    d = %d\n", alpha, beta, d);
@@ -35,28 +35,26 @@ static double G3(const MyBoard &board, double alpha, double beta, int d)
 		return board.maxTile();
 	}
 	double m = 1e300;
-	int count = 0;
+	int count = 0, k = evil_count & 3 ? 1 : 3;
 	for (int i = 0; i < 4; i++) {
 		for (int j = 0; j < 4; j++) {
 			if (board.board[i][j] == 0) {
-				for (int k = 1; k <= 3; k += 2) {
-					MyBoard after(board);
-					after.board[i][j] = k;
-					count++;
-					beta = m < beta ? m : beta;
-					double t = F3(after, alpha, beta, d + 1);
-					m = t < m ? t : m;
-					if (m <= alpha) return m;
-				}
+				MyBoard after(board);
+				after.board[i][j] = k;
+				count++;
+				beta = m < beta ? m : beta;
+				double t = F3(after, alpha, beta, d + 1, evil_count);
+				m = t < m ? t : m;
+				if (m <= alpha) return m;
 			}
 		}
 	}
 	return count ? m : board.maxTile();
 }
 
-static void eval_evil(const MyBoard &board, double &val)
+static void eval_evil(const MyBoard &board, double &val, int evil_count)
 {
-	val = F3(board, board.maxTile() + 1, board.maxTile() + 2, 0);
+	val = F3(board, board.maxTile() + 1, board.maxTile() + 2, 0, evil_count);
 }
 
 Fib2584Ai::Fib2584Ai()
@@ -103,7 +101,7 @@ int Fib2584Ai::generateEvilMove(int board[4][4])
 		if (board[i/4][i%4] == 0) {
 			board[i/4][i%4] = next;
 			double val;
-			eval_evil(MyBoard(board), val);
+			eval_evil(MyBoard(board), val, move_count);
 			if (val < min_val) {
 				min_val = val;
 				min_i = i;
