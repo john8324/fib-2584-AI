@@ -1,10 +1,10 @@
 #include "Fib2584Ai.h"
 
-#define MAX_DEPTH 8
+#define MAX_DEPTH 10
 
-static double G3(const MyBoard &board, double alpha, double beta, int d, int evil_count);
+static int G3(const MyBoard &board, int alpha, int beta, int d, int evil_count);
 
-static double F3(const MyBoard &board, double alpha, double beta, int d, int evil_count)
+static int F3(const MyBoard &board, int alpha, int beta, int d, int evil_count)
 {
 	// Fail soft alpha-beta
 	//printf("alpha = %f    beta = %f    d = %d\n", alpha, beta, d);
@@ -12,14 +12,14 @@ static double F3(const MyBoard &board, double alpha, double beta, int d, int evi
 		return board.maxTile();
 	}
 	MyBoard after[] = {board, board, board, board};
-	double m = -1e300;
+	int m = -1;
 	int count = 0;
 	for (int i = 0; i < 4; i++) {
 		int r;
 		if (after[i].move(static_cast<MoveDirection>(i), r)) {
 			count++;
 			alpha = m > alpha ? m : alpha;
-			double t = G3(after[i], alpha, beta, d + 1, evil_count + 1);
+			int t = G3(after[i], alpha, beta, d + 1, evil_count + 1);
 			m = t > m ? t : m;
 			if (m >= beta) return m;
 		}
@@ -27,14 +27,14 @@ static double F3(const MyBoard &board, double alpha, double beta, int d, int evi
 	return count ? m : board.maxTile();
 }
 
-static double G3(const MyBoard &board, double alpha, double beta, int d, int evil_count)
+static int G3(const MyBoard &board, int alpha, int beta, int d, int evil_count)
 {
 	// Fail soft alpha-beta
 	//printf("alpha = %f    beta = %f    d = %d\n", alpha, beta, d);
 	if (d >= MAX_DEPTH) {
 		return board.maxTile();
 	}
-	double m = 1e300;
+	int m = 2147483647;
 	int count = 0, k = evil_count & 3 ? 1 : 3;
 	for (int i = 0; i < 4; i++) {
 		for (int j = 0; j < 4; j++) {
@@ -43,7 +43,7 @@ static double G3(const MyBoard &board, double alpha, double beta, int d, int evi
 				after.board[i][j] = k;
 				count++;
 				beta = m < beta ? m : beta;
-				double t = F3(after, alpha, beta, d + 1, evil_count);
+				int t = F3(after, alpha, beta, d + 1, evil_count);
 				m = t < m ? t : m;
 				if (m <= alpha) return m;
 			}
