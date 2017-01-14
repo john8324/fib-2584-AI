@@ -3,8 +3,7 @@
 
 #include <cstdlib>
 #include <ctime>
-#include <stack>
-#include "Fib2584/MoveDirection.h"
+#include "Fib2584/Typedefs.h"
 #include "MyBoard.h"
 #include "Feature.h"
 #include "TD.h"
@@ -16,7 +15,9 @@ public:
 	// initialize ai
 	void initialize(int argc, char* argv[]);
 	// generate one move
-	MoveDirection generateMove(const int board[4][4]);
+	MoveDirection generateMove(int board[4][4]);
+	// You need to implement this for project 4
+	int generateEvilMove(int board[4][4]);
 	// do some action when game over
 	void gameOver(int board[4][4], int iScore);
 
@@ -24,10 +25,8 @@ public:
 	You can implement any additional functions
 	or define any variables you may need.
 	**********************************/
-
-private:
-	static bool _inited;
 	TD td;
+	int move_count;
 };
 
 #endif

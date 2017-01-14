@@ -1,10 +1,9 @@
 #include <iostream>
 #include <cstdlib>
 #include <algorithm>
-#include "Fib2584/GameBoard.h"
-#include "Fib2584/MoveDirection.h"
-#include "Fib2584/Statistic.h"
-#include "Fib2584Ai.h"
+#include "../Fib2584/GameBoard.h"
+#include "../Fib2584/Statistic.h"
+#include "../Fib2584Ai.h"
 
 using namespace std;
 
@@ -53,9 +52,17 @@ int main(int argc, char* argv[])
 	// play each round
 	for(int i = 0;i < iPlayRounds;i++) {
 		GameBoard gameBoard;
-		gameBoard.initialize();
-		int iScore = 0;
 		int arrayBoard[4][4];
+		gameBoard.getArrayBoard(arrayBoard);
+		int ei = ai.generateEvilMove(arrayBoard);
+		arrayBoard[ei/4][ei%4] = ai.move_count & 3 ? 1 : 3;
+		gameBoard = GameBoard(MyBoard(arrayBoard).compress());
+		//gameBoard.getArrayBoard(arrayBoard);
+		ei = ai.generateEvilMove(arrayBoard);
+		arrayBoard[ei/4][ei%4] = ai.move_count & 3 ? 1 : 3;
+		gameBoard = GameBoard(MyBoard(arrayBoard).compress());
+		//gameBoard.initialize();
+		int iScore = 0;
 		while(!gameBoard.terminated()) {
 			gameBoard.getArrayBoard(arrayBoard);
 			MoveDirection moveDirection = ai.generateMove(arrayBoard);
@@ -66,28 +73,11 @@ int main(int argc, char* argv[])
 				continue;
 			statistic.increaseOneMove();
 
-			// check
-			MyBoard ori(arrayBoard), bb;
-			bb = ori;
-			int ss;
-			bb.move(moveDirection, ss);  // My
-			int tmp[4][4];
-			gameBoard.getArrayBoard(tmp);
-			MyBoard tt(tmp); // TA
-			if (0) {
-				cout << "------------ori------------" << endl;
-				cout << ori << endl;
-				cout << "------------My-------------" << endl;
-				cout << bb;
-				cout << "------------TA-------------" << endl;
-				cout << tt;
-				cout << "---------------------------" << endl;
-				cout << "dir = " << moveDirection << " WRONG MOVE!!!!!!!!!!!!!" << endl;
-				cout << "------------xx-------------" << endl;
-			}
-
-			gameBoard.addRandomTile();
-			//cout << "Now score = " << iScore << endl;
+			gameBoard.getArrayBoard(arrayBoard);
+			int ei = ai.generateEvilMove(arrayBoard);
+			arrayBoard[ei/4][ei%4] = ai.move_count & 3 ? 1 : 3;
+			gameBoard = GameBoard(MyBoard(arrayBoard).compress());
+			//gameBoard.addRandomTile();
 		}
 		gameBoard.getArrayBoard(arrayBoard);
 		ai.gameOver(arrayBoard, iScore);

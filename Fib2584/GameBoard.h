@@ -2,7 +2,7 @@
 #define __GAMEBOARD_H__
 
 #include <iostream>
-#include "MoveDirection.h"
+#include "Typedefs.h"
 #include "MoveTable.h"
 #include "BitBoard.h"
 #include "Random.h"
@@ -17,6 +17,7 @@ private:
 	static Random random_;
 public:
 	GameBoard();
+	GameBoard(const BitBoard& board) {board_ = board;} // My function
 	void initialize();
 	int move(MoveDirection moveDirection);
 	void addRandomTile();

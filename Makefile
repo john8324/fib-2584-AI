@@ -1,8 +1,15 @@
-all:
-	g++ -std=c++11 -O3 Fib2584/*.cpp *.cpp -o play_game
+all: client stdio play
+	
+
+client:
+	g++ *.cpp main/client_main.cpp Fib2584/*.cpp -o ai_client -O3 -std=c++11
+
+stdio:
+	g++ *.cpp main/main.cpp Fib2584/*.cpp -o ai_stdio -O3 -std=c++11
+
+play:
+	g++ *.cpp main/play_main.cpp Fib2584/*.cpp -o play_game -O3 -std=c++11
 
 clean:
-	rm play_game TD_w.bin
+	rm -f ai_client ai_stdio play_game TD_w.bin
 
-run:
-	./play_game 100000
