@@ -5,7 +5,7 @@ static int max_state = 0;
 TD::TD()
 {
 	weight.resize(1 << 22); // size of Feature
-	FILE *fp = fopen("TD_w.bin", "r");
+	FILE *fp = fopen("TD_w.bin", "rb");
 	if (fp) {
 		fread(&weight[0], sizeof(double), 1 << 22, fp);
 		fclose(fp);
@@ -15,7 +15,7 @@ TD::TD()
 
 TD::~TD()
 {
-	FILE *fp = fopen("TD_w.bin", "w");
+	FILE *fp = fopen("TD_w.bin", "wb");
 	if (fp) {
 		fwrite(&weight[0], sizeof(double), 1 << 22, fp);
 		fclose(fp);

@@ -11,7 +11,7 @@ using namespace std;
 void weightViewer()
 {
 	double *w = new double[1 << 22];
-	FILE *fp = fopen("TD_w.bin", "r");
+	FILE *fp = fopen("TD_w.bin", "rb");
 	if (fp) {
 		fread(w, sizeof(double), 1 << 22, fp);
 		fclose(fp);
