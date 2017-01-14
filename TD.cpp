@@ -25,7 +25,7 @@ TD::~TD()
 
 double TD::eval(const Feature &feature) const
 {
-	vector<int> f = feature.getFeature(); // sparse binary feature
+	const vector<int>& f = feature.getFeature(); // sparse binary feature
 	double sum = 0;
 	for (int i = 0; i < f.size(); i++) {
 		sum += weight[f[i]];
@@ -53,7 +53,7 @@ void TD::updateWeight(int iScore)
 		const double Vs = eval(f); // V(s(t))
 		double dV = alpha * (rtt + Vstt - Vs);
 		// v = w dot f, dv/df = w
-		vector<int> ff = f.getFeature();
+		const vector<int>& ff = f.getFeature();
 		for (int i = 0; i < ff.size(); i++) {
 			weight[ff[i]] += dV;
 			//cout << weight[ff[i]] << endl;
