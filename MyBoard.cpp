@@ -75,54 +75,49 @@ inline static void reverse_rotate(int board[4][4], MoveDirection dir)
 static int move_up(int board[4][4])
 {
 	int tmp[4], tmp_count, score = 0;
-	// check each column
+	/* check each column */
 	for (int j = 0; j < 4; j++) {
-		// compact
 		tmp_count = 0;
 		for (int i = 0; i < 4; i++) {
-			if (board[i][j]) {
+			/* find the nonzero tile */
+			if (board[i][j] == 0) {
+				continue;
+			}
+			/* find next nonzero tile */
+			int k;
+			for (k = i + 1; k < 4; k++) {
+				if (board[k][j] != 0) {
+					break;
+				}
+			}
+			if (k == 4) {
 				tmp[tmp_count++] = board[i][j];
+				break;
+			}
+			int mm = board[i][j] + board[k][j];
+			if (-1 != MyBoard::get_fib_index(mm)) {
+				tmp[tmp_count++] = mm; /* merged */
+				score += mm;
+				i = k;
+			} else {
+				tmp[tmp_count++] = board[i][j];
+				i = k - 1;
 			}
 		}
 		for (int i = 0; i < 4; i++) {
 			board[i][j] = i < tmp_count ? tmp[i] : 0;
 		}
-		
-		// merge
-		for (int i = 0; i < 3 && board[i+1][j]; i++) {
-			int mm = board[i][j] + board[i+1][j];
-			if (-1 != MyBoard::get_fib_index(mm)) {
-				board[i][j] = mm;
-				score += mm;
-				for (int ii = i+1; ii < 3; ii++) {
-					board[ii][j] = board[ii+1][j];
-				}
-				board[3][j] = 0;
-			}
-		}
 	}
 	return score;
 }
 
+
 bool MyBoard::move(MoveDirection dir, int &score)
 {
 	MyBoard ori = *this;
-	switch (dir) {
-		case MOVE_UP:
-			score = move_up(board);
-			break;
-			
-		case MOVE_DOWN:
-		case MOVE_LEFT:
-		case MOVE_RIGHT:
-			rotate_to_up(board, dir);
-			score = move_up(board);
-			reverse_rotate(board, dir);
-			break;
-			
-		default:
-			break;
-	}
+	rotate_to_up(board, dir);
+	score = move_up(board);
+	reverse_rotate(board, dir);
 	return ori != *this;
 }
 
