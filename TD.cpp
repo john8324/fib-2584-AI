@@ -34,7 +34,7 @@ double TD::eval(const Feature &feature) const
 	return sum;
 }
 
-void TD::updateWeight()
+void TD::updateWeight(int iScore)
 {
 	max_state = afterStates.size() > max_state ? afterStates.size() : max_state;
 	auto last = afterStates.top();
@@ -44,15 +44,8 @@ void TD::updateWeight()
 		throw ("LAST is NOT over!!!!!!");
 		return;
 	}
-	double Vstt; // V(s(t+1))
-	if (last.first.maxTile() >= 610) {
-		// WIN
-		Vstt = last.first.maxTile() * 1000;
-	} else {
-		// LOSE
-		Vstt = last.first.maxTile() * 10 - 1000000;
-	}
-	double rtt = last.second; // r(t+1)
+	double Vstt = iScore; // V(s(t+1))
+	int rtt = last.second; // r(t+1)
 	while (!afterStates.empty()) {
 		auto top = afterStates.top();
 		afterStates.pop();

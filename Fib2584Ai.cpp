@@ -49,7 +49,7 @@ void Fib2584Ai::gameOver(int board[4][4], int iScore)
 	//cout << "r = 0\nafter = \n" << after << endl;
 	td.pushAfterState(State(after, 0));
 	//printf("%d\n", iScore);
-	td.updateWeight();
+	td.updateWeight(iScore);
 }
 
 /**********************************

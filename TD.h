@@ -6,7 +6,8 @@
 #include <stack>
 #include "Feature.h"
 
-typedef pair<MyBoard, double> State;
+// <position, reward>
+typedef pair<MyBoard, int> State;
 
 // TD(0) learning
 class TD{
@@ -17,7 +18,7 @@ public:
 	// method
 	double eval(const Feature& feature) const;
 	void pushAfterState(const State &state) {afterStates.push(state);}
-	void updateWeight();
+	void updateWeight(int iScore);
 
 private:
 	vector<double> weight;
