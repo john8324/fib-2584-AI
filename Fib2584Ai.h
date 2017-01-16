@@ -7,6 +7,7 @@
 #include "MyBoard.h"
 #include "Feature.h"
 #include "TD.h"
+#include "IDAB.h"
 
 class Fib2584Ai
 {
@@ -26,6 +27,7 @@ public:
 	or define any variables you may need.
 	**********************************/
 	TD td;
+	IDAB idab;
 	int move_count;
 };
 

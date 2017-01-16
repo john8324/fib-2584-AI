@@ -1,60 +1,8 @@
 #include "Fib2584Ai.h"
 
-#define MAX_DEPTH 10
-
-static int G3(const MyBoard &board, int alpha, int beta, int d, int evil_count);
-
-static int F3(const MyBoard &board, int alpha, int beta, int d, int evil_count)
+static void eval_evil(IDAB& idab, const MyBoard &board, double &val, int evil_count)
 {
-	// Fail soft alpha-beta
-	//printf("alpha = %f    beta = %f    d = %d\n", alpha, beta, d);
-	if (d >= MAX_DEPTH) {
-		return board.maxTile();
-	}
-	MyBoard after[] = {board, board, board, board};
-	int m = -1;
-	int count = 0;
-	for (int i = 0; i < 4; i++) {
-		int r;
-		if (after[i].move(static_cast<MoveDirection>(i), r)) {
-			count++;
-			alpha = m > alpha ? m : alpha;
-			int t = G3(after[i], alpha, beta, d + 1, evil_count + 1);
-			m = t > m ? t : m;
-			if (m >= beta) return m;
-		}
-	}
-	return count ? m : board.maxTile();
-}
-
-static int G3(const MyBoard &board, int alpha, int beta, int d, int evil_count)
-{
-	// Fail soft alpha-beta
-	//printf("alpha = %f    beta = %f    d = %d\n", alpha, beta, d);
-	if (d >= MAX_DEPTH) {
-		return board.maxTile();
-	}
-	int m = 2147483647;
-	int count = 0, k = evil_count & 3 ? 1 : 3;
-	for (int i = 0; i < 4; i++) {
-		for (int j = 0; j < 4; j++) {
-			if (board.board[i][j] == 0) {
-				MyBoard after(board);
-				after.board[i][j] = k;
-				count++;
-				beta = m < beta ? m : beta;
-				int t = F3(after, alpha, beta, d + 1, evil_count);
-				m = t < m ? t : m;
-				if (m <= alpha) return m;
-			}
-		}
-	}
-	return count ? m : board.maxTile();
-}
-
-static void eval_evil(const MyBoard &board, double &val, int evil_count)
-{
-	val = F3(board, board.maxTile() + 1, board.maxTile() + 2, 0, evil_count);
+	val = idab.F3(board, board.maxTile() + 1, board.maxTile() + 2, 0, 10, evil_count);
 }
 
 Fib2584Ai::Fib2584Ai()
@@ -111,7 +59,7 @@ int Fib2584Ai::generateEvilMove(int board[4][4])
 		if (board[i/4][i%4] == 0) {
 			board[i/4][i%4] = next;
 			double val;
-			eval_evil(MyBoard(board), val, move_count);
+			eval_evil(idab, MyBoard(board), val, move_count);
 			if (val < min_val) {
 				min_val = val;
 				min_i = i;
