@@ -50,6 +50,7 @@ int IDAB::G3(const MyBoard &board, const int alpha, int beta, const int depth, c
 			}
 		}
 	}
+	//sort(after.begin(), after.end(), [](const MyBoard& a, const MyBoard& b) {return a.second > b.second;});
 	int m = 2147483647;
 	for (int i = 0; i < after.size(); i++) {
 		beta = m < beta ? m : beta;
@@ -64,20 +65,26 @@ int IDAB::G3(const MyBoard &board, const int alpha, int beta, const int depth, c
 
 int IDAB::IDAB_F3(const MyBoard &board, const int alpha, const int beta, const int evil_count)
 {
-	const time_t st = time(NULL);
+	const clock_t st = clock();
+	clock_t now = st;
 	int m;
-	for (limit = 1; limit <= 50 && difftime(time(NULL), st) <= 0.8; limit++) {
+	for (limit = 1; limit <= 50 && (now - st) <= 0.06 * CLOCKS_PER_SEC; limit++) {
 		m = F3(board, alpha, beta, 0, evil_count);
+		now = clock();
 	}
+	//cout << limit << " " << (now - st) / (double)CLOCKS_PER_SEC << endl;
 	return m;
 }
 
 int IDAB::IDAB_G3(const MyBoard &board, const int alpha, const int beta, const int evil_count)
 {
-	const time_t st = time(NULL);
+	const clock_t st = clock();
+	clock_t now = st;
 	int m;
-	for (limit = 1; limit <= 50 && difftime(time(NULL), st) <= 0.8; limit++) {
+	for (limit = 1; limit <= 50 && (now - st) <= 0.06 * CLOCKS_PER_SEC; limit++) {
 		m = G3(board, alpha, beta, 0, evil_count);
+		now = clock();
 	}
+	//cout << limit << " " << (now - st) / (double)CLOCKS_PER_SEC << endl;
 	return m;
 }
