@@ -29,6 +29,7 @@ public:
 	TD td;
 	IDAB idab;
 	int move_count;
+	bool train = true;
 };
 
 #endif

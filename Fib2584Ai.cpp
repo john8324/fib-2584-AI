@@ -1,10 +1,5 @@
 #include "Fib2584Ai.h"
 
-static void eval_evil(IDAB& idab, const MyBoard &board, double &val, int evil_count)
-{
-	val = idab.IDAB_F3(board, board.maxTile(), board.maxTile() * 10, evil_count);
-}
-
 Fib2584Ai::Fib2584Ai()
 {
 	move_count = 0;
@@ -49,17 +44,31 @@ int Fib2584Ai::generateEvilMove(int board[4][4])
 {
 	int next = (++move_count) & 3 ? 1 : 3;
 	if (move_count == 1) {
-		return 0;
+		return rand() % 16;
 	} else if (move_count == 2) {
-		return 15;
+		int i = rand() % 15;
+		return board[i/4][i%4] == 0 ? i : 15;
 	}
 	int min_i = -1;
-	double min_val = 1e300;
+	int min_val = 2147483647;
 	for (int i = 0; i < 16; i++) {
 		if (board[i/4][i%4] == 0) {
 			board[i/4][i%4] = next;
-			double val;
-			eval_evil(idab, MyBoard(board), val, move_count);
+			// evil_eval
+			MyBoard after(board);
+			int val, alpha, beta;
+			if (train) {
+				idab.limit = 2;
+				alpha = after.maxTile();
+				beta = after.maxTile() + 20;
+				beta = min_val < beta ? min_val : beta;
+				val = idab.F3(after, alpha, beta, 0, move_count);
+			} else {
+				alpha = after.maxTile();
+				beta = after.maxTile() * 3 + 400;
+				beta = min_val < beta ? min_val : beta;
+				val = idab.IDAB_F3(after, alpha, beta, move_count);
+			}
 			if (val < min_val) {
 				min_val = val;
 				min_i = i;
