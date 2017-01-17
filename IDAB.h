@@ -4,6 +4,7 @@
 #include <algorithm>
 #include <vector>
 #include "MyBoard.h"
+#include "TD.h"
 
 // Iterative deepening alpha-beta prunning
 class IDAB

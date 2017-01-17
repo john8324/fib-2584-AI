@@ -11,18 +11,20 @@ int IDAB::F3(const MyBoard &board, int alpha, const int beta, const int depth, c
 	if (depth >= limit) {
 		return f(board);
 	}
-	vector<MyBoard> after;
+	// position, reward
+	vector<State> after;
 	for (int i = 0; i < 4; i++) {
 		MyBoard tmp = board;
 		int r;
 		if (tmp.move(static_cast<MoveDirection>(i), r)) {
-			after.push_back(tmp);
+			after.push_back(State(tmp, r));
 		}
 	}
+	sort(after.begin(), after.end(), [](const State& a, const State& b) {return a.second > b.second;});
 	int m = 0;
 	for (int i = 0; i < after.size(); i++) {
 		alpha = m > alpha ? m : alpha;
-		int t = G3(after[i], alpha, beta, depth + 1, evil_count + 1);
+		int t = G3(after[i].first, alpha, beta, depth + 1, evil_count + 1);
 		m = t > m ? t : m;
 		if (m >= beta) {
 			break;
