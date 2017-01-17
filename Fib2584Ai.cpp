@@ -2,8 +2,7 @@
 
 static void eval_evil(IDAB& idab, const MyBoard &board, double &val, int evil_count)
 {
-	idab.limit = 10;
-	val = idab.F3(board, board.maxTile(), board.maxTile() * 10, 0, evil_count);
+	val = idab.IDAB_F3(board, board.maxTile(), board.maxTile() * 10, evil_count);
 }
 
 Fib2584Ai::Fib2584Ai()

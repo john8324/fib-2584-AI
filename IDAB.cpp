@@ -62,4 +62,22 @@ int IDAB::G3(const MyBoard &board, const int alpha, int beta, const int depth, c
 	return m;
 }
 
+int IDAB::IDAB_F3(const MyBoard &board, const int alpha, const int beta, const int evil_count)
+{
+	const time_t st = time(NULL);
+	int m;
+	for (limit = 1; limit <= 50 && difftime(time(NULL), st) <= 0.8; limit++) {
+		m = F3(board, alpha, beta, 0, evil_count);
+	}
+	return m;
+}
 
+int IDAB::IDAB_G3(const MyBoard &board, const int alpha, const int beta, const int evil_count)
+{
+	const time_t st = time(NULL);
+	int m;
+	for (limit = 1; limit <= 50 && difftime(time(NULL), st) <= 0.8; limit++) {
+		m = G3(board, alpha, beta, 0, evil_count);
+	}
+	return m;
+}
