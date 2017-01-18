@@ -23,7 +23,7 @@ public:
 private:
 	vector<double> weight;
 	stack<State> afterStates;
-	const double alpha = 0.0008; // learning rate
+	const double alpha = 0.0005; // learning rate
 };
 
 #endif
