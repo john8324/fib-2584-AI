@@ -50,6 +50,14 @@ int Fib2584Ai::generateEvilMove(int board[4][4])
 	} else if (move_count == 2) {
 		int i = rand() % 15;
 		return board[i/4][i%4] == 0 ? i : 15;
+	} else if (train) {
+		vector<int> zeros;
+		for (int i = 0; i < 16; i++) {
+			if (board[i/4][i%4] == 0) {
+				zeros.push_back(i);
+			}
+		}
+		return zeros[rand() % zeros.size()];
 	}
 	int min_i = -1;
 	int min_val = 2147483647;
@@ -59,18 +67,10 @@ int Fib2584Ai::generateEvilMove(int board[4][4])
 			// evil_eval
 			MyBoard after(board);
 			int val, alpha, beta;
-			if (train) {
-				idab.limit = 2;
-				alpha = after.maxTile();
-				beta = after.maxTile() + 20;
-				beta = min_val < beta ? min_val : beta;
-				val = idab.F3(after, alpha, beta, 0, move_count);
-			} else {
-				alpha = after.maxTile();
-				beta = after.maxTile() * 3 + 400;
-				beta = min_val < beta ? min_val : beta;
-				val = idab.IDAB_F3(after, alpha, beta, move_count);
-			}
+			alpha = after.maxTile();
+			beta = after.maxTile() * 3 + 400;
+			beta = min_val < beta ? min_val : beta;
+			val = idab.IDAB_F3(after, alpha, beta, move_count);
 			if (val < min_val) {
 				min_val = val;
 				min_i = i;
