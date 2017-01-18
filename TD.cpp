@@ -4,10 +4,10 @@ static int max_state = 0;
 
 TD::TD()
 {
-	weight.resize(1 << 22); // size of Feature
+	weight.resize(1 << 22 | 1 << 18); // size of Feature
 	FILE *fp = fopen("TD_w.bin", "rb");
 	if (fp) {
-		fread(&weight[0], sizeof(double), 1 << 22, fp);
+		fread(&weight[0], sizeof(double), weight.size(), fp);
 		fclose(fp);
 	}
 	afterStates.push(State(MyBoard(), 0)); // initial state
@@ -17,7 +17,7 @@ TD::~TD()
 {
 	FILE *fp = fopen("TD_w.bin", "wb");
 	if (fp) {
-		fwrite(&weight[0], sizeof(double), 1 << 22, fp);
+		fwrite(&weight[0], sizeof(double), weight.size(), fp);
 		fclose(fp);
 	}
 	cout << "max_state = " << max_state << endl;
