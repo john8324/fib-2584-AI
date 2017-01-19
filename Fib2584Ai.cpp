@@ -44,6 +44,9 @@ MoveDirection Fib2584Ai::generateMove(int board[4][4])
 
 int Fib2584Ai::generateEvilMove(int board[4][4])
 {
+	if (MyBoard(board) == MyBoard()) {
+		move_count = 0;
+	}
 	int next = (++move_count) & 3 ? 1 : 3;
 	if (move_count == 1) {
 		return rand() % 16;
