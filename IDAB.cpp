@@ -40,21 +40,21 @@ int IDAB::G3(const MyBoard &board, const int alpha, int beta, const int depth, c
 		return f(board);
 	}
 	const int k = evil_count & 3 ? 1 : 3;
-	vector<MyBoard> after;
+	vector<pair<MyBoard, double>> after;
 	for (int i = 0; i < 4; i++) {
 		for (int j = 0; j < 4; j++) {
 			if (board.board[i][j] == 0) {
 				MyBoard tmp(board);
 				tmp.board[i][j] = k;
-				after.push_back(tmp);
+				after.push_back(pair<MyBoard, double>(tmp, td.eval(Feature(tmp))));
 			}
 		}
 	}
-	//sort(after.begin(), after.end(), [](const MyBoard& a, const MyBoard& b) {return a.second > b.second;});
+	sort(after.begin(), after.end(), [](const pair<MyBoard, double>& a, const pair<MyBoard, double>& b) {return a.second < b.second;});
 	int m = 2147483647;
 	for (int i = 0; i < after.size(); i++) {
 		beta = m < beta ? m : beta;
-		int t = F3(after[i], alpha, beta, depth + 1, evil_count);
+		int t = F3(after[i].first, alpha, beta, depth + 1, evil_count);
 		m = t < m ? t : m;
 		if (m <= alpha) {
 			break;

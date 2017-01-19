@@ -17,6 +17,7 @@ public:
 	int IDAB_F3(const MyBoard &board, const int alpha, const int beta, const int evil_count);
 	int IDAB_G3(const MyBoard &board, const int alpha, const int beta, const int evil_count);
 	int limit;
+	TD td;
 };
 
 #endif

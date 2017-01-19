@@ -18,7 +18,7 @@ MoveDirection Fib2584Ai::generateMove(int board[4][4])
 	for (int i = 0; i < 4; i++) {
 		int r;
 		if (after[i].move(static_cast<MoveDirection>(i), r)) {
-			const double score = r + td.eval(Feature(after[i]));
+			const double score = r + idab.td.eval(Feature(after[i]));
 			if (score > max_score) {
 				max_score = score;
 				max_r = r;
@@ -37,7 +37,7 @@ MoveDirection Fib2584Ai::generateMove(int board[4][4])
 	//cout << "r = 1\nafter = \n" << after[max_dir] << endl;
 	//cout << "max_r = " << max_r << endl;
 	if (train) {
-		td.pushAfterState(State(after[max_dir], max_r));
+		idab.td.pushAfterState(State(after[max_dir], max_r));
 	}
 	return static_cast<MoveDirection>(max_dir);
 }
@@ -89,9 +89,9 @@ void Fib2584Ai::gameOver(int board[4][4], int iScore)
 	if (train) {
 		MyBoard after(board);
 		//cout << "r = 0\nafter = \n" << after << endl;
-		td.pushAfterState(State(after, 0));
+		idab.td.pushAfterState(State(after, 0));
 		//printf("%d\n", iScore);
-		td.updateWeight(iScore);
+		idab.td.updateWeight(iScore);
 	}
 	move_count = 0;
 }

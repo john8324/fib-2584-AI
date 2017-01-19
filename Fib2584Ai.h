@@ -26,7 +26,6 @@ public:
 	You can implement any additional functions
 	or define any variables you may need.
 	**********************************/
-	TD td;
 	IDAB idab;
 	int move_count;
 	bool train = true;
