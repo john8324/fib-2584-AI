@@ -5,7 +5,11 @@ ai_client ai_stdio play_game
 ai_stdio是助教給的簡單測試，可以直接忽略
 play_game是我自己用來training的平台
 
-另外我目前是使用某位同學架設的2584.nctu.me這個平台做線上測試，
-所以client_main.cpp已經被改過IP
+先前是使用某位同學架設的2584.nctu.me這個平台做線上測試，
+對應的IP是140.113.194.120
+但是我現在把平台指向助教開的平台，應該就是明天比賽用的平台
+對應的IP是140.113.167.52
+就我所知，某同學的平台比較嚴格XDDD
 
-記得每次執行一局要把ai_client給kill掉XDDDDD
+另外，這版的ai_client可以自動偵測是否為同一局，
+因此不需要像之前每次跑完一局後要被kill(control C)掉

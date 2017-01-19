@@ -63,12 +63,12 @@ int IDAB::G3(const MyBoard &board, const int alpha, int beta, const int depth, c
 	return m;
 }
 
-int IDAB::IDAB_F3(const MyBoard &board, const int alpha, const int beta, const int evil_count)
+int IDAB::IDAB_F3(const MyBoard &board, const int alpha, const int beta, const int evil_count, const double max_sec)
 {
 	const clock_t st = clock();
 	clock_t now = st;
 	int m;
-	for (limit = 1; limit <= 50 && (now - st) <= 0.06 * CLOCKS_PER_SEC; limit++) {
+	for (limit = 1; limit <= 50 && (now - st) <= max_sec * CLOCKS_PER_SEC; limit++) {
 		m = F3(board, alpha, beta, 0, evil_count);
 		now = clock();
 	}
@@ -76,12 +76,12 @@ int IDAB::IDAB_F3(const MyBoard &board, const int alpha, const int beta, const i
 	return m;
 }
 
-int IDAB::IDAB_G3(const MyBoard &board, const int alpha, const int beta, const int evil_count)
+int IDAB::IDAB_G3(const MyBoard &board, const int alpha, const int beta, const int evil_count, const double max_sec)
 {
 	const clock_t st = clock();
 	clock_t now = st;
 	int m;
-	for (limit = 1; limit <= 50 && (now - st) <= 0.06 * CLOCKS_PER_SEC; limit++) {
+	for (limit = 1; limit <= 50 && (now - st) <= max_sec * CLOCKS_PER_SEC; limit++) {
 		m = G3(board, alpha, beta, 0, evil_count);
 		now = clock();
 	}

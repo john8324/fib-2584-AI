@@ -16,12 +16,14 @@ MoveDirection Fib2584Ai::generateMove(int board[4][4])
 	if (after[0].maxTile() == 1 && after[0].zeroCount() == 14) {
 		evil_count = 2;
 	}
+	//cout << evil_count << " " << move_count << endl;
+	++evil_count;
 	int max_dir = -1, max_r = 0; // (dir and r) of max_score
 	double max_score = -1e300;
 	for (int i = 0; i < 4; i++) {
 		int r;
 		if (after[i].move(static_cast<MoveDirection>(i), r)) {
-			const double score = r + idab.td.eval(Feature(after[i]));
+			const double score = r + idab.td.eval(Feature(after[i])) + (train ? 0 : idab.IDAB_G3(after[i], 1, 2, evil_count, 0.03) < 1 ? -10000 : 0);
 			if (score > max_score) {
 				max_score = score;
 				max_r = r;
@@ -42,7 +44,6 @@ MoveDirection Fib2584Ai::generateMove(int board[4][4])
 	if (train) {
 		idab.td.pushAfterState(State(after[max_dir], max_r));
 	}
-	++evil_count;
 	return static_cast<MoveDirection>(max_dir);
 }
 
@@ -75,14 +76,17 @@ int Fib2584Ai::generateEvilMove(int board[4][4])
 			MyBoard after(board);
 			int val, alpha, beta;
 			alpha = after.maxTile();
-			beta = after.maxTile() * 3 + 400;
+			beta = alpha + 800;
 			beta = min_val < beta ? min_val : beta;
-			val = idab.IDAB_F3(after, alpha, beta, move_count);
+			val = idab.IDAB_F3(after, alpha, beta, move_count, 0.025);
 			if (val < min_val) {
 				min_val = val;
 				min_i = i;
 			}
 			board[i/4][i%4] = 0;
+			if (min_val <= alpha) {
+				break;
+			}
 		}
 	}
 	return min_i;
