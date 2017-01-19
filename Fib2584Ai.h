@@ -27,8 +27,8 @@ public:
 	or define any variables you may need.
 	**********************************/
 	IDAB idab;
-	int move_count;
-	bool train = true;
+	int move_count, evil_count;
+	bool train = false;
 };
 
 #endif

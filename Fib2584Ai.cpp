@@ -2,7 +2,7 @@
 
 Fib2584Ai::Fib2584Ai()
 {
-	move_count = 0;
+	move_count = evil_count = 0;
 }
 
 void Fib2584Ai::initialize(int argc, char* argv[])
@@ -13,6 +13,9 @@ void Fib2584Ai::initialize(int argc, char* argv[])
 MoveDirection Fib2584Ai::generateMove(int board[4][4])
 {
 	MyBoard after[] = {board, board, board, board};
+	if (after[0].maxTile() == 1 && after[0].zeroCount() == 14) {
+		evil_count = 2;
+	}
 	int max_dir = -1, max_r = 0; // (dir and r) of max_score
 	double max_score = -1e300;
 	for (int i = 0; i < 4; i++) {
@@ -39,6 +42,7 @@ MoveDirection Fib2584Ai::generateMove(int board[4][4])
 	if (train) {
 		idab.td.pushAfterState(State(after[max_dir], max_r));
 	}
+	++evil_count;
 	return static_cast<MoveDirection>(max_dir);
 }
 
