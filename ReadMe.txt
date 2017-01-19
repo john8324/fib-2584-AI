@@ -1,0 +1,11 @@
+三個執行檔
+ai_client ai_stdio play_game
+
+只有ai_client會用於比賽，屬於線上測試平台
+ai_stdio是助教給的簡單測試，可以直接忽略
+play_game是我自己用來training的平台
+
+另外我目前是使用某位同學架設的2584.nctu.me這個平台做線上測試，
+所以client_main.cpp已經被改過IP
+
+記得每次執行一局要把ai_client給kill掉XDDDDD

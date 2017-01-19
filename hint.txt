@@ -1,3 +1,18 @@
+Updates (11/20):
+-Please download the new framework. It has been updated to fix infinite text output upon server closing the connection on the client.
+-The server now rejects duplicate student IDs. If your client disconnects with an error message "DUPLICATEID", it means some other AI program is already running with the given ID.
+-An additional test AI can be accessed with the following ID/passphrase: 0512/testAI2
+
+===================================================================================================================
+
+ 
+
+Some implementation details:
+
+The index of the arrayBoard is as follows:
+
+0 1 2 3
+
 For the fourth project, you need to write an AI program that makes the game Fib-2584 more difficult (we will refer to it as EVIL):
 
 This evil program tries to generate new tiles in the worst possible location so that the player will lose as soon as possible
